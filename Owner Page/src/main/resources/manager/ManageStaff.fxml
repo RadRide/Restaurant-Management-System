@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.StaffManagerController">
+   <content>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0" prefWidth="500.0">
+         <children>
+            <Label layoutX="28.0" layoutY="59.0" prefHeight="38.0" prefWidth="66.0" text="Name:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nameField" layoutX="164.0" layoutY="65.0" prefHeight="26.0" prefWidth="309.0" />
+            <Label layoutX="28.0" layoutY="98.0" prefHeight="38.0" prefWidth="66.0" text="Age:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="28.0" layoutY="136.0" prefHeight="38.0" prefWidth="148.0" text="Phone Number:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="phoneField" layoutX="164.0" layoutY="143.0" prefHeight="26.0" prefWidth="310.0" />
+            <Label layoutX="28.0" layoutY="174.0" prefHeight="38.0" prefWidth="84.0" text="Salary($):">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="usdField" layoutX="163.0" layoutY="180.0" prefHeight="26.0" prefWidth="310.0" />
+            <Label layoutX="28.0" layoutY="253.0" prefHeight="38.0" prefWidth="129.0" text="Date Joined:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="28.0" layoutY="291.0" prefHeight="38.0" prefWidth="66.0" text="Shift:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Slider fx:id="ageSlider" layoutX="164.0" layoutY="110.0" majorTickUnit="5.0" prefHeight="14.0" prefWidth="262.0" value="18.0" />
+            <Label fx:id="ageNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="433.0" layoutY="98.0" prefHeight="38.0" prefWidth="39.0" text="18">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="dateJoined" layoutX="164.0" layoutY="259.0" prefHeight="26.0" prefWidth="308.0" />
+            <ChoiceBox fx:id="shiftPicker" layoutX="164.0" layoutY="297.0" prefHeight="26.0" prefWidth="309.0" />
+            <Label fx:id="sectionLabel" layoutX="27.0" layoutY="329.0" prefHeight="38.0" prefWidth="80.0" text="Section:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="sectionPicker" layoutX="163.0" layoutY="335.0" prefHeight="26.0" prefWidth="309.0" />
+            <Label fx:id="warningLabel" alignment="CENTER" layoutX="4.0" layoutY="14.0" prefHeight="38.0" prefWidth="491.0" text="All Fields Must Be Filled" textFill="RED" visible="false">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="27.0" layoutY="212.0" prefHeight="38.0" prefWidth="104.0" text="Salary(LBP):">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="lbpField" layoutX="162.0" layoutY="218.0" prefHeight="26.0" prefWidth="310.0" />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="OK" />
+   </buttonTypes>
+</DialogPane>

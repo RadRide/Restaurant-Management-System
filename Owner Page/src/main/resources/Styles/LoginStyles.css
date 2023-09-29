@@ -1,0 +1,43 @@
+.leftPane{
+    -fx-background-color: #fefefe;
+}
+
+.rightPane{
+    -fx-background-color: linear-gradient(to bottom, #5cd2c6, #5AE881);
+}
+
+.continueButton{
+    -fx-background-color: none;
+    -fx-border-width: 2px;
+    -fx-border-color: #363753;
+    -fx-border-radius: 5%;
+}
+.continueButton:hover{
+    -fx-text-fill: #5cd2c6;
+    -fx-border-color: #5cd2c6;
+}
+
+.inputField{
+    -fx-background-color: none;
+    -fx-border-color: #fefefe;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 50%;
+    -fx-text-fill: #fefefe;
+}
+
+.loginFields{
+    -fx-background-color: none;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-style: solid;
+    -fx-border-color: #363753;
+    -fx-text-fill: #363753;
+}
+.loginFields:focused{
+    -fx-border-color: #5cd2c6;
+    -fx-text-fill: #5cd2c6;
+}
+
+.showPassword{
+    -fx-background-color: none;
+}
