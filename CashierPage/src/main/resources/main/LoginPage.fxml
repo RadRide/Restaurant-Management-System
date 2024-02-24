@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" spacing="50.0" styleClass="background" stylesheets="@../styles/LoginScreenStyles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="login.LoginPageController">
+   <children>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="439.0" prefWidth="400.0" styleClass="loginPane" VBox.vgrow="NEVER">
+         <children>
+            <Label layoutX="97.0" layoutY="14.0" text="Enter ID To Continue" textFill="#601cbe">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="idField" alignment="CENTER" layoutX="37.0" layoutY="96.0" onKeyReleased="#checkField" prefHeight="31.0" prefWidth="317.0" promptText="ID" styleClass="loginField">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </TextField>
+            <Button fx:id="button1" layoutX="42.0" layoutY="150.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="1">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="button2" layoutX="122.0" layoutY="150.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="2">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="button3" layoutX="201.0" layoutY="150.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="3">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="button4" layoutX="42.0" layoutY="220.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="4">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="button5" layoutX="122.0" layoutY="220.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="5">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="button6" layoutX="201.0" layoutY="220.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="6">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="button7" layoutX="42.0" layoutY="290.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="7">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="button8" layoutX="121.0" layoutY="290.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="8">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="button9" layoutX="200.0" layoutY="290.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="9">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="eraseButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="277.0" layoutY="150.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="200.0" prefWidth="80.0" styleClass="numberButton" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <graphic>
+                  <FontIcon fx:id="eraseIcon" iconColor="#363753" iconLiteral="win10-arrows-long-left" iconSize="40" />
+               </graphic>
+            </Button>
+            <Button fx:id="button0" layoutX="121.0" layoutY="360.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="60.0" styleClass="numberButton" text="0">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="204.0" layoutY="360.0" mnemonicParsing="false" onAction="#dialPressed" prefHeight="60.0" prefWidth="154.0" styleClass="numberButton" text="Login" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Label fx:id="warningMessage" layoutX="138.0" layoutY="55.0" text="ID Not Valid" textFill="RED" visible="false">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

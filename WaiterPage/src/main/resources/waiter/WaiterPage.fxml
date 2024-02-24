@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="middleBackground" stylesheets="@../Styles/WaiterPageStyles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="waiter.WaiterPageController">
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="130.0" styleClass="sideBar" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="nameLabel" alignment="CENTER" prefHeight="39.0" prefWidth="151.0" styleClass="nameLabel" text="Waiter Name" textAlignment="CENTER" textFill="#fefefe" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <ScrollPane fitToWidth="true" prefHeight="486.0" prefWidth="130.0" styleClass="scrollPane" VBox.vgrow="ALWAYS">
+               <content>
+                  <VBox fx:id="categoryBox" alignment="TOP_CENTER" prefWidth="129.0">
+                     <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="24.0" prefWidth="120.0" styleClass="sideButton" text="Salads" textAlignment="CENTER" wrapText="true">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="24.0" prefWidth="120.0" styleClass="sideButton" text="Salads" textAlignment="CENTER" wrapText="true" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <Button fx:id="logoutButton" mnemonicParsing="false" styleClass="logoutButton">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+               <graphic>
+                  <FontIcon fx:id="logoutIcon" iconColor="#fefefe" iconLiteral="win10-shutdown" iconSize="30" />
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <ScrollPane fx:id="dishScroll" fitToWidth="true" styleClass="middleBackground">
+               <content>
+                  <VBox fx:id="dishBox" styleClass="middleBackground">
+                     <children>
+                        <FlowPane hgap="20.0" prefHeight="255.0" prefWidth="500.0" rowValignment="TOP" styleClass="middleBackground" vgap="20.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="label" prefHeight="30.0" prefWidth="460.0" styleClass="categoryLabel" text="Category Label">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Tabbouleh " />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="282.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="10.0" layoutY="174.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="20.0" top="10.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </FlowPane>
+                        <FlowPane hgap="20.0" layoutX="10.0" layoutY="10.0" prefHeight="255.0" prefWidth="518.0" rowValignment="TOP" styleClass="middleBackground" vgap="20.0">
+                           <children>
+                              <Label prefHeight="29.0" prefWidth="460.0" styleClass="categoryLabel" text="Label">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="282.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                              <Button layoutX="10.0" layoutY="174.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="140.0" styleClass="dishButton" text="Button" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="20.0" top="10.0" />
+                           </padding>
+                        </FlowPane>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </center>
+         <right>
+            <VBox prefHeight="600.0" prefWidth="350.0" styleClass="dishBar" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="370.0">
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label text="Table:" textFill="#050a30">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="tableLabel" layoutX="20.0" layoutY="15.0" prefHeight="26.0" prefWidth="242.0" text="N/A" textFill="#050a30">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Button fx:id="changeTableButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="42.0" styleClass="editDish">
+                           <graphic>
+                              <FontIcon iconColor="#050a30" iconLiteral="win10-upload" iconSize="30" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <ScrollPane fx:id="orderScroll" prefHeight="472.0" prefWidth="350.0" styleClass="orderScroll" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox fx:id="orderBox" alignment="TOP_CENTER" prefHeight="438.0" prefWidth="347.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="347.0" styleClass="itemBox">
+                                 <children>
+                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="45.0" styleClass="deleteButton">
+                                       <graphic>
+                                          <FontIcon iconColor="#a70024" iconLiteral="win10-cancel" iconSize="30" />
+                                       </graphic>
+                                    </Button>
+                                    <Label prefHeight="60.0" prefWidth="160.0" styleClass="dishLabel" text=" Tabbouleh" wrapText="true" />
+                                    <Spinner editable="true" prefHeight="60.0" prefWidth="80.0" styleClass="quantitySpinner" />
+                                    <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="55.0" styleClass="editDish">
+                                       <graphic>
+                                          <FontIcon iconColor="#050a30" iconLiteral="win10-pencil" iconSize="30" />
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </content></ScrollPane>
+                  <VBox prefHeight="100.0" prefWidth="350.0">
+                     <children>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="23.0" prefWidth="350.0">
+                           <children>
+                              <Label prefHeight="26.0" prefWidth="71.0" text="Total: $" textFill="#363753" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="totalLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="26.0" prefWidth="282.0" text="12,000.00" textAlignment="RIGHT" textFill="#363753" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="66.0" prefWidth="350.0">
+                           <children>
+                              <Button fx:id="confirmOrderButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="145.0" styleClass="orderButton" text="Confirm Order">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="7.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <ComboBox fx:id="discountCombo" prefHeight="40.0" prefWidth="190.0" styleClass="orderCombo" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </right>
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="870.0" styleClass="topBar" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="backButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="32.0" styleClass="backButton">
+                     <graphic>
+                        <FontIcon iconColor="#fefefe" iconLiteral="win10-double-left" iconSize="30" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </top>
+      </BorderPane>
+   </center>
+</BorderPane>

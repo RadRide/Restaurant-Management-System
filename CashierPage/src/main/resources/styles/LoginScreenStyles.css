@@ -1,0 +1,44 @@
+* {
+    -fx-purple: #601cbe;
+    -fx-lightPurple: #6e77ee;
+    -fx-lightBlue: #1DBFA0;
+    -fx-white: #fefefe;
+}
+
+.background{
+    /*-fx-background-color: linear-gradient(to bottom right, #5cd2c6, #5AE881);*/
+    /*-fx-background-color: radial-gradient(center 50% 50% , radius 10rem ,#5cd2c6, #5AE881);*/
+    -fx-background-color: radial-gradient(focus-angle 45deg , focus-distance 20% , center 25% 25% , radius 50% , reflect, -fx-lightBlue, -fx-purple 80% , -fx-lightPurple);
+}
+
+.loginPane{
+    -fx-background-color: #fefefe;
+    -fx-background-radius: 7%;
+}
+
+.loginField{
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: -fx-purple;
+    -fx-text-fill: -fx-purple;
+    -fx-prompt-text-fill: rgba(96, 28, 190, 0.7);
+}
+
+.numberButton{
+    -fx-background-color: transparent;
+    -fx-border-width: 3px;
+    -fx-border-color: -fx-purple;
+    -fx-border-radius: 50%;
+    -fx-text-fill: -fx-purple;
+    /*-fx-text-alignment: center;*/
+}
+.numberButton .ikonli-font-icon{
+    -fx-icon_color: -fx-purple;
+}
+.numberButton:pressed{
+    -fx-border-color: -fx-lightBlue;
+    -fx-text-fill: -fx-lightBlue;
+}
+.numberButton:pressed .ikonli-font-icon{
+    -fx-icon-color: -fx-lightBlue;
+}

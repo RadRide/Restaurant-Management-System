@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cashier.CashierPageController">
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="150.0" styleClass="sideBar" stylesheets="@../styles/CashierStyles.css" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="cashierName" alignment="CENTER" contentDisplay="TOP" minHeight="-Infinity" prefHeight="60.0" prefWidth="150.0" styleClass="nameLabel" textFill="#fefefe" wrapText="true" VBox.vgrow="NEVER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="orderViewerButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changePage" prefHeight="40.0" prefWidth="135.0" styleClass="selectedSideButton" text="Order Viewer">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+               <graphic>
+                  <FontIcon iconColor="#fefefe" iconLiteral="win10-calculator" iconSize="20" />
+               </graphic>
+            </Button>
+            <Button fx:id="orderHistoryButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changePage" prefHeight="40.0" prefWidth="135.0" styleClass="sideButton" text="Orders History">
+               <graphic>
+                  <FontIcon iconColor="#fefefe" iconLiteral="win10-library" iconSize="20" />
+               </graphic>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="takeDeliveryButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changePage" prefHeight="40.0" prefWidth="135.0" styleClass="sideButton" text="Take Delivery">
+               <graphic>
+                  <FontIcon iconColor="#fefefe" iconLiteral="win10-fax" iconSize="20" />
+               </graphic>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Region prefHeight="623.0" prefWidth="150.0" VBox.vgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#logout" prefHeight="55.0" prefWidth="52.0" styleClass="logoutBtn">
+               <graphic>
+                  <FontIcon iconColor="#fefefe" iconLiteral="win10-shutdown" iconSize="30" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <tooltip>
+                  <Tooltip text="Logout" />
+               </tooltip>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <AnchorPane styleClass="background" stylesheets="@../styles/CashierStyles.css" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane fx:id="orderViewerPage" layoutX="325.0" layoutY="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="850.0" styleClass="topBar" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="backButton" disable="true" mnemonicParsing="false" onAction="#back" prefHeight="55.0" prefWidth="52.0" styleClass="refreshBtn">
+                           <graphic>
+                              <FontIcon iconColor="#fefefe" iconLiteral="win10-double-left" iconSize="30" />
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Back">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </Button>
+                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" prefHeight="55.0" prefWidth="52.0" styleClass="refreshBtn">
+                           <graphic>
+                              <FontIcon iconColor="#fefefe" iconLiteral="win10-refresh" iconSize="30" />
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Refresh">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </top>
+               <center>
+                  <AnchorPane>
+                     <children>
+                        <ScrollPane fx:id="orderViewerPane" fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <VBox fx:id="orderVbox" prefHeight="637.0" prefWidth="848.0" spacing="10.0">
+                                 <children>
+                                    <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="45.0" VBox.vgrow="NEVER">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="orderLabel" text="In House Orders" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font name="System Bold" size="20.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="10.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <FlowPane fx:id="inHouseFlow" hgap="10.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </FlowPane>
+                                    <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="45.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="orderLabel" text="Delivery Orders" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font name="System Bold" size="20.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="10.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <FlowPane fx:id="deliveryFlow" hgap="10.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </FlowPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <VBox fx:id="orderDetailsPane" prefHeight="637.0" prefWidth="848.0" spacing="10.0" styleClass="background" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <VBox prefHeight="620.0" prefWidth="400.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Order:">
+                                                   <HBox.margin>
+                                                      <Insets right="87.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="orderIdLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Discount:">
+                                                   <HBox.margin>
+                                                      <Insets right="60.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="orderDiscountLabel" styleClass="orderInfoLabel" text="\% 0.25" />
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="tableBox">
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Table:">
+                                                   <HBox.margin>
+                                                      <Insets right="88.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="orderTableLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="sectionBox">
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Section:">
+                                                   <HBox.margin>
+                                                      <Insets right="75.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="orderSectionLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="customerNameBox">
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Customer Name:">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="customerNameLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="addressBox">
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Address:">
+                                                   <HBox.margin>
+                                                      <Insets right="74.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="orderAddressLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Total:">
+                                                   <HBox.margin>
+                                                      <Insets right="84.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="orderTotalLabel" styleClass="orderInfoLabel" text="\$ 203.65 /  LBP 9,224,850" />
+                                             </children>
+                                          </HBox>
+                                          <Region prefHeight="70.0" prefWidth="480.0" />
+                                          <Label styleClass="orderInfoLabel" text="Numbers:" />
+                                          <HBox prefHeight="30.0" prefWidth="480.0" spacing="20.0">
+                                             <children>
+                                                <TextField fx:id="paidUsdField" onKeyReleased="#fieldsValueChanged" prefHeight="32.0" prefWidth="220.0" promptText="Paid  USD($)" styleClass="orderField" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="paidLbpField" onKeyReleased="#fieldsValueChanged" prefHeight="32.0" prefWidth="220.0" promptText="Paid  LBP" styleClass="orderField" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <Region prefHeight="27.0" prefWidth="480.0" />
+                                          <Label styleClass="orderInfoLabel" text="Tip:" />
+                                          <HBox prefHeight="30.0" prefWidth="480.0" spacing="20.0">
+                                             <children>
+                                                <TextField fx:id="tipUsdField" onKeyReleased="#fieldsValueChanged" prefHeight="32.0" prefWidth="220.0" promptText="Tip  USD($)" styleClass="orderField" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="tipLbpField" onKeyReleased="#fieldsValueChanged" prefHeight="32.0" prefWidth="220.0" promptText="Tip  LBP" styleClass="orderField" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <Region prefHeight="27.0" prefWidth="480.0" VBox.vgrow="NEVER" />
+                                          <HBox alignment="CENTER" prefHeight="30.0" prefWidth="480.0" spacing="20.0">
+                                             <children>
+                                                <Button fx:id="checkoutButton" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkout" prefHeight="35.0" prefWidth="150.0" styleClass="orderCheckoutBtn" text="Checkout" HBox.hgrow="ALWAYS" />
+                                                <Button fx:id="printInvoiceButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#printInvoice" prefHeight="35.0" prefWidth="150.0" styleClass="orderCheckoutBtn" text="Print Invoice" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="15.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
+                                    <TextArea fx:id="invoiceArea" editable="false" maxWidth="-Infinity" prefHeight="620.0" prefWidth="415.0" styleClass="invoiceArea" wrapText="true" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Monospaced Bold" size="18.0" />
+                                       </font></TextArea>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+            <BorderPane fx:id="orderHistoryPage" layoutX="10.0" layoutY="10.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="850.0" styleClass="topBar" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="historyBackButton" disable="true" mnemonicParsing="false" onAction="#back" prefHeight="55.0" prefWidth="52.0" styleClass="refreshBtn">
+                           <graphic>
+                              <FontIcon iconColor="#fefefe" iconLiteral="win10-double-left" iconSize="30" />
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Back">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                        </Button>
+                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="historyRefreshButton" mnemonicParsing="false" onAction="#refresh" prefHeight="55.0" prefWidth="52.0" styleClass="refreshBtn">
+                           <graphic>
+                              <FontIcon iconColor="#fefefe" iconLiteral="win10-refresh" iconSize="30" />
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Refresh">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </top>
+               <center>
+                  <AnchorPane>
+                     <children>
+                        <ScrollPane fx:id="orderHistoryViewerPane" fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <VBox fx:id="orderVbox1" prefHeight="637.0" prefWidth="848.0" spacing="10.0">
+                                 <children>
+                                    <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="45.0" VBox.vgrow="NEVER">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="orderLabel" text="In House Checked Out Orders" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font name="System Bold" size="20.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="10.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <FlowPane fx:id="oldInHouseFlow" hgap="10.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </FlowPane>
+                                    <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="45.0">
+                                       <children>
+                                          <Label maxWidth="1.7976931348623157E308" styleClass="orderLabel" text="Delivery checked Out Orders" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font name="System Bold" size="20.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="10.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <FlowPane fx:id="oldDeliveryFlow" hgap="10.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </FlowPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <VBox fx:id="orderHistoryDetailsPane" prefHeight="637.0" prefWidth="848.0" spacing="10.0" styleClass="background" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <VBox prefHeight="620.0" prefWidth="400.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Order:">
+                                                   <HBox.margin>
+                                                      <Insets right="87.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="oldOrderIdLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Discount:">
+                                                   <HBox.margin>
+                                                      <Insets right="60.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="oldOrderDiscountLabel" styleClass="orderInfoLabel" text="\% 0.25" />
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="oldTableBox">
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Table:">
+                                                   <HBox.margin>
+                                                      <Insets right="88.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="oldOrderTableLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="oldSectionBox">
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Section:">
+                                                   <HBox.margin>
+                                                      <Insets right="75.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="oldOrderSectionLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="oldCustomerNameBox">
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Customer Name:">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="oldCustomerNameLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox fx:id="oldAddressBox">
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Address:">
+                                                   <HBox.margin>
+                                                      <Insets right="74.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="oldOrderAddressLabel" styleClass="orderInfoLabel" text="10235" />
+                                             </children>
+                                          </HBox>
+                                          <HBox>
+                                             <children>
+                                                <Label styleClass="orderInfoLabel" text="Total:">
+                                                   <HBox.margin>
+                                                      <Insets right="84.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="oldOrderTotalLabel" styleClass="orderInfoLabel" text="\$ 203.65 /  LBP 9,224,850" />
+                                             </children>
+                                          </HBox>
+                                          <Region prefHeight="70.0" prefWidth="480.0" />
+                                          <Label styleClass="orderInfoLabel" text="Numbers:" />
+                                          <HBox prefHeight="30.0" prefWidth="480.0" spacing="20.0">
+                                             <children>
+                                                <TextField fx:id="oldPaidUsdField" editable="false" onKeyReleased="#fieldsValueChanged" prefHeight="32.0" prefWidth="220.0" promptText="Paid  USD($)" styleClass="orderField" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="oldPaidLbpField" editable="false" onKeyReleased="#fieldsValueChanged" prefHeight="32.0" prefWidth="220.0" promptText="Paid  LBP" styleClass="orderField" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <Region prefHeight="27.0" prefWidth="480.0" />
+                                          <Label styleClass="orderInfoLabel" text="Tip:" />
+                                          <HBox prefHeight="30.0" prefWidth="480.0" spacing="20.0">
+                                             <children>
+                                                <TextField fx:id="oldTipUsdField" editable="false" onKeyReleased="#fieldsValueChanged" prefHeight="32.0" prefWidth="220.0" promptText="Tip  USD($)" styleClass="orderField" HBox.hgrow="ALWAYS" />
+                                                <TextField fx:id="oldTipLbpField" editable="false" onKeyReleased="#fieldsValueChanged" prefHeight="32.0" prefWidth="220.0" promptText="Tip  LBP" styleClass="orderField" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <Region prefHeight="27.0" prefWidth="480.0" VBox.vgrow="NEVER" />
+                                          <HBox alignment="CENTER" prefHeight="30.0" prefWidth="480.0" spacing="20.0">
+                                             <children>
+                                                <Button fx:id="printOldInvoiceButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#printInvoice" prefHeight="35.0" prefWidth="150.0" styleClass="orderCheckoutBtn" text="Print Invoice" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="15.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
+                                    <TextArea fx:id="oldInvoiceArea" editable="false" maxWidth="-Infinity" prefHeight="620.0" prefWidth="415.0" styleClass="invoiceArea" wrapText="true" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font name="Monospaced Bold" size="18.0" />
+                                       </font>
+                                    </TextArea>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

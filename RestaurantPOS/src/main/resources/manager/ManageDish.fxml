@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXListView?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane styleClass="background" stylesheets="@../Styles/DialogStyles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.DishManagerController">
+   <content>
+      <AnchorPane fx:id="dishPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="400.0" styleClass="background" stylesheets="@../Styles/DialogStyles.css">
+         <children>
+            <Label layoutX="22.0" layoutY="442.0" prefHeight="38.0" prefWidth="69.0" text="Cost($):" textFill="#203647">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="costLabel" layoutX="96.0" layoutY="442.0" prefHeight="38.0" prefWidth="278.0" text="0" textFill="#203647">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <MFXFilterComboBox fx:id="descriptionChoice" floatMode="BORDER" floatingText="Ingredients" layoutX="20.0" layoutY="163.0" prefHeight="40.0" prefWidth="360.0" styleClass="filteredCombo" />
+            <MFXTextField fx:id="nameField" floatingText="Name" layoutX="20.0" layoutY="14.0" prefHeight="30.0" prefWidth="361.0" styleClass="textField" />
+            <MFXTextField fx:id="priceField" floatingText="Price ($)" layoutX="19.0" layoutY="113.0" prefHeight="38.0" prefWidth="361.0" styleClass="textField" />
+            <MFXComboBox fx:id="categoryChoice" floatingText="Category" layoutX="20.0" layoutY="63.0" prefHeight="40.0" prefWidth="360.0" styleClass="filteredCombo" />
+            <MFXButton fx:id="removeButton" buttonType="RAISED" disable="true" layoutX="20.0" layoutY="212.0" prefHeight="38.0" prefWidth="100.0" rippleColor="#fefefe" styleClass="btn" text="Remove" />
+            <MFXButton fx:id="addButton" buttonType="RAISED" disable="true" layoutX="126.0" layoutY="212.0" prefHeight="38.0" prefWidth="100.0" rippleColor="#fefefe" styleClass="btn" text="Add" />
+            <MFXTextField fx:id="quantityField" floatingText="Quantity" layoutX="234.0" layoutY="212.0" prefHeight="38.0" prefWidth="147.0" styleClass="textField" />
+            <MFXListView fx:id="ingredientListView" depthLevel="LEVEL3" layoutX="20.0" layoutY="259.0" prefHeight="177.0" prefWidth="361.0" styleClass="listView" thumbColor="#4da8da" thumbHoverColor="#0271ad" />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="OK" />
+   </buttonTypes>
+   <header>
+      <Label fx:id="messageLabel" alignment="CENTER" prefHeight="38.0" prefWidth="356.0" text="All Fields Must Be Filled" textFill="#fc4040" visible="false">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </header>
+</DialogPane>

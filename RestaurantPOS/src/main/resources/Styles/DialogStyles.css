@@ -1,0 +1,116 @@
+@import "Properties.css";
+
+.tipFields{
+    -fx-text-fill: -fx-blueGrey;
+}
+
+.background{
+    -fx-background-color: -fx-white;
+}
+
+/*.dialogPane .button{*/
+/*    -fx-background-color: red;*/
+/*    !*This Works but i need to design it later*!*/
+/*}*/
+
+.textField{
+    -fx-wrap-text: true;
+}
+.filteredCombo,
+.textField,
+.datePicker {
+    -fx-background-color: transparent;
+
+    -fx-border-color: -fx-blueGrey;
+
+    -fx-text-fill: -fx-blueGrey;
+    -fx-font-weight: bold;
+
+    -mfx-float-mode: BORDER;
+}
+.filteredCombo:focus-within,
+.textField:focus-within,
+.datePicker:focus-within {
+    -fx-border-color: -fx-lightBlue;
+    -fx-text-fill: -fx-blue;
+}
+.filteredCombo:focus-within .floating-text,
+.textField:focus-within .floating-text,
+.datePicker:focus-within .floating-text {
+    -fx-text-fill: -fx-lightBlue;
+}
+.filteredCombo:focus-within .caret .mfx-font-icon,
+.datePicker:focus-within .icon,
+.datePicker .date-picker-popup .months-combo:focus-within .caret .mfx-font-icon,
+.datePicker .date-picker-popup .years-combo:focus-within .caret .mfx-font-icon {
+    -mfx-color: -fx-lightBlue;
+}
+
+/***** DATE PICKER SECTION *****/
+.datePicker .date-picker-popup .months-combo:focus-within,
+.datePicker .date-picker-popup .years-combo:focus-within {
+    -fx-text-fill: -fx-lightBlue;
+}
+.datePicker .date-picker-popup .months-combo .virtual-flow .mfx-combo-box-cell:selected,
+.datePicker .date-picker-popup .years-combo .virtual-flow .mfx-combo-box-cell:selected {
+    -fx-background-color: -fx-lightBlue;
+}
+.datePicker .date-picker-popup .months-combo .virtual-flow .mfx-combo-box-cell:hover,
+.datePicker .date-picker-popup .years-combo .virtual-flow .mfx-combo-box-cell:hover {
+    -fx-background-color: -fx-hoverLightBlue;
+}
+.datePicker .date-picker-popup .months-combo .virtual-flow .mfx-combo-box-cell:selected .label,
+.datePicker .date-picker-popup .years-combo .virtual-flow .mfx-combo-box-cell:selected .label {
+    -fx-text-fill: -fx-white;
+}
+.datePicker .date-picker-popup .months-combo .virtual-flow .mfx-combo-box-cell:hover:selected,
+.datePicker .date-picker-popup .years-combo .virtual-flow .mfx-combo-box-cell:hover:selected {
+    -fx-background-color: -fx-lightBlue;
+}
+.datePicker .date-picker-popup .mfx-date-cell:selected {
+    -fx-background-color: -fx-lightBlue;
+}
+.datePicker .date-picker-popup .mfx-date-cell:current {
+    -fx-text-fill: -fx-lightBlue;
+    -fx-background-color: -fx-hoverLightBlue;
+}
+/***** DATE PICKER SECTION *****/
+
+.mfx-slider .track {
+    -fx-background-color: red;
+}
+.mfx-slider .bar{
+    -fx-background-color: red;
+}
+.mfx-slider .thumb-container .thumb {
+    -mfx-color: red;
+    -fx-background-color: red;
+}
+
+.btn{
+    -fx-background-color: -fx-lightBlue;
+
+    -fx-text-fill: -fx-white;
+    -fx-font-weight: bold;
+}
+
+.listView{
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-blueGrey;
+    -fx-border-radius: 3;
+}
+.listView .mfx-list-cell{
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-blue;
+    -fx-font-weight: bold;
+}
+.listView .mfx-list-cell:selected{
+    -fx-background-color: -fx-lightBlue;
+}
+.listView:focus-within{
+    -fx-border-color: -fx-lightBlue;
+}
+
+.dialogLabel {
+    -fx-text-fill: -fx-blueGrey;
+}

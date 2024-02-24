@@ -1,0 +1,29 @@
+.commentArea{
+    -fx-background-radius: 20px;
+    -fx-background-color: white;
+
+    -fx-border-radius:20px;
+    -fx-border-color: #646464FF;
+    -fx-border-width: 2px;
+}
+
+.keyBoardButton{
+    -fx-background-color: rgb(100, 100, 100);
+    -fx-background-radius: 10px;
+
+    -fx-text-fill: #fefefe;
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+}
+.spaceButton{
+    -fx-background-color: rgb(60, 60, 60);
+    -fx-background-radius: 10px;
+
+    -fx-text-fill: #fefefe;
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+}
+.keyBoardButton:pressed,
+.spaceButton:pressed{
+    -fx-opacity: 0.5;
+}

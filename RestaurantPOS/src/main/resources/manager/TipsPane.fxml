@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane styleClass="background" stylesheets="@../Styles/DialogStyles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.StaffManagerController">
+   <content>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="325.0" styleClass="background" stylesheets="@../Styles/DialogStyles.css">
+         <children>
+            <Label layoutX="84.0" layoutY="21.0" styleClass="tipFields" text="Tips Distribution ($)">
+               <font>
+                  <Font name="Dubai Bold" size="18.0" />
+               </font>
+            </Label>
+            <MFXTextField fx:id="managerTips" allowEdit="false" floatingText="Manager" layoutX="38.0" layoutY="68.0" prefHeight="38.0" prefWidth="250.0" styleClass="textField" />
+            <MFXTextField fx:id="waiterTips" allowEdit="false" floatingText="Waiter" layoutX="38.0" layoutY="119.0" prefHeight="38.0" prefWidth="250.0" styleClass="textField" />
+            <MFXTextField fx:id="cashierTips" allowEdit="false" floatingText="Cashier" layoutX="38.0" layoutY="168.0" prefHeight="38.0" prefWidth="250.0" styleClass="textField" />
+            <MFXTextField fx:id="kitchenTips" allowEdit="false" floatingText="Kitchen Crew" layoutX="38.0" layoutY="215.0" prefHeight="38.0" prefWidth="250.0" styleClass="textField" />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="OK" />
+   </buttonTypes>
+</DialogPane>

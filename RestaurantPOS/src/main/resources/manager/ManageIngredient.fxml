@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXFilterComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane styleClass="background" stylesheets="@../Styles/DialogStyles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.ItemManagerController">
+   <content>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="217.0" prefWidth="380.0" styleClass="background">
+         <children>
+            <MFXTextField fx:id="nameField" floatingText="Name" layoutX="40.0" layoutY="14.0" prefHeight="38.0" prefWidth="300.0" styleClass="textField" />
+            <MFXFilterComboBox fx:id="categoryChoice" floatingText="Category" layoutX="40.0" layoutY="65.0" prefWidth="300.0" styleClass="filteredCombo" />
+            <MFXTextField fx:id="costField" floatingText="Cost Per Unit($)" layoutX="40.0" layoutY="154.0" prefWidth="145.0" styleClass="textField" />
+            <MFXTextField fx:id="quantityField" floatingText="Quantity" layoutX="195.0" layoutY="154.0" prefWidth="145.0" styleClass="textField" />
+            <MFXFilterComboBox fx:id="unitChoice" floatingText="Unit" layoutX="40.0" layoutY="110.0" prefWidth="300.0" styleClass="filteredCombo" />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="OK" />
+   </buttonTypes>
+   <header>
+      <Label fx:id="messageLabel" alignment="CENTER" prefHeight="44.0" prefWidth="370.0" text="All Fields Must be Filled" textFill="RED" visible="false">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </header>
+</DialogPane>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<DialogPane styleClass="background" stylesheets="@../Styles/DialogStyles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.StaffManagerController">
+   <content>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="270.0" styleClass="background" stylesheets="@../Styles/DialogStyles.css">
+         <children>
+            <MFXTextField fx:id="nameArea" allowEdit="false" floatingText="Name" layoutX="35.0" layoutY="47.0" prefWidth="200.0" styleClass="textField" />
+            <MFXTextField fx:id="idArea" allowEdit="false" floatingText="ID" layoutX="35.0" layoutY="96.0" prefWidth="200.0" styleClass="textField" />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="OK" />
+   </buttonTypes>
+</DialogPane>

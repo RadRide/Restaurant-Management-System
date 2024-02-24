@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
+<?import io.github.palexdev.materialfx.controls.MFXSlider?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane prefWidth="450.0" styleClass="background" stylesheets="@../Styles/DialogStyles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="manager.StaffManagerController">
+   <content>
+      <AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" styleClass="background" stylesheets="@../Styles/DialogStyles.css">
+         <children>
+            <Label layoutX="27.0" layoutY="58.0" prefHeight="38.0" prefWidth="48.0" text="Age:" textFill="#203647">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <MFXTextField fx:id="nameField" floatingText="Name" layoutX="25.0" layoutY="14.0" prefHeight="38.0" prefWidth="405.0" styleClass="textField" />
+            <MFXTextField fx:id="phoneField" floatingText="Phone Number" layoutX="25.0" layoutY="102.0" prefHeight="38.0" prefWidth="405.0" styleClass="textField" />
+            <MFXTextField fx:id="lbpField" floatingText="Salary(LBP)" layoutX="230.0" layoutY="148.0" prefHeight="38.0" prefWidth="200.0" styleClass="textField" />
+            <MFXDatePicker fx:id="dateJoined" floatingText="Date Joined" layoutX="25.0" layoutY="195.0" prefHeight="38.0" prefWidth="405.0" styleClass="datePicker" />
+            <MFXTextField fx:id="usdField" floatingText="Salary($)" layoutX="25.0" layoutY="148.0" prefHeight="38.0" prefWidth="200.0" styleClass="textField" />
+            <MFXComboBox fx:id="shiftPicker" floatingText="Shift" layoutX="25.0" layoutY="242.0" prefWidth="200.0" styleClass="filteredCombo" />
+            <MFXComboBox fx:id="sectionPicker" floatingText="Section" layoutX="230.0" layoutY="242.0" prefWidth="200.0" styleClass="filteredCombo" />
+            <MFXSlider fx:id="ageSlider" layoutX="92.0" layoutY="77.0" minorTicksCount="0" popupSide="OTHER_SIDE" prefHeight="7.0" prefWidth="337.0" styleClass="mfx-slider" stylesheets="@../Styles/DialogStyles.css" tickUnit="1.0" value="25.0" />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="OK" />
+   </buttonTypes>
+   <header>
+      <Label fx:id="warningLabel" alignment="CENTER" prefHeight="38.0" prefWidth="491.0" text="All Fields Must Be Filled" textFill="RED" visible="false">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </header>
+</DialogPane>
