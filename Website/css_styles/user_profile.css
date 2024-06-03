@@ -1,0 +1,573 @@
+
+
+/* scrollbar and thumb */
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--red-color);
+    border-radius: 50px;
+}
+
+:root {
+    /*--brown-color: #362417;*/
+    --brown-color: #623f29;
+    --beige-color: #F4C95D;
+    --orange-color: #DD7230;
+    --red-color: #FF0022;
+    --white-color: #f3f3f3;
+}
+
+body{
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+
+
+    color: #1a202c;
+    text-align: left;
+    background-color: var(--white-color);
+
+    /*background: rgb(0,0,0);*/
+    /*background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(100,0,0,1) 100%);*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*=====================================================================================================================*/
+/* Navbar */
+/*=====================================================================================================================*/
+
+.navbar-container{
+    width: 100%;
+    padding-top: 25px;
+    position: absolute;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    z-index: 9;
+}
+.navbar-icon{
+    margin-left: 20px;
+}
+.menu-open {
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+    .menu-open {
+        margin-right: 5px ;
+    }
+    .navbar-container{
+        padding-top: 10px;
+    }
+}
+
+
+
+
+.menu-close {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 40px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+
+.nav-container {
+    position: fixed;
+    left: -100%;
+    width: 40%;
+    height: 100vh;
+    background: #fafafa;
+    z-index: 10;
+}
+
+.menu__item {
+    position: relative;
+    padding: 0 6vw;
+}
+.menu__item a{
+    text-decoration: none;
+    color: black;
+}
+.menu__item a:hover{
+    color: red;
+}
+.menu__item-link {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    transition: opacity 0.4s;
+}
+
+.menu__item-link::before {
+    all: initial;
+    counter-increment: menu;
+    position: absolute;
+    bottom: 60%;
+    left: 0;
+    pointer-events: none;
+}
+
+.menu__item-link:hover {
+    transition-duration: 0.1s;
+    opacity: 0;
+}
+
+.menu__item-img {
+    z-index: 2;
+    pointer-events: none;
+    position: absolute;
+    height: 12vh;
+    max-height: 600px;
+    opacity: 0;
+    left: 8%;
+    top: 10%;
+    transform: scale(0);
+}
+
+.menu__item-link:hover + .menu__item-img {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.4s;
+}
+
+.menu {
+    margin-top: 100px;
+
+    padding: 10vh 0 25vh;
+    --offset: 20vw;
+    --move-initial: calc(-25% + var(--offset));
+    --move-final: calc(-50% + var(--offset));
+    /*font-size: 7vw;*/
+}
+
+.marquee {
+    width: 100%;
+    /*background-color: blue;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    color: rgb(214, 214, 214);
+    pointer-events: none;
+}
+
+.marquee__inner {
+    width: fit-content;
+    display: flex;
+    position: relative;
+    opacity: 0;
+    transition: all 0.1s;
+    transform: translateX(60px);
+}
+
+.menu__item-link:hover ~ .marquee .marquee__inner {
+    opacity: 1;
+    transform: translateX(0px);
+    transition-duration: 0.4s;
+}
+
+.menu__item-link,
+.marquee span {
+    white-space: nowrap;
+    font-size: 7vw;
+    padding: 0 1vw;
+    line-height: 1.15;
+}
+
+.marquee span {
+    font-style: italic;
+}
+
+
+
+
+
+
+
+/*==================================================================================*/
+/* these styles for the navigation between tabs */
+/*==================================================================================*/
+
+
+.main-body {
+    padding: 15px;
+}
+
+.nav-link {
+    color: #4a5568;
+}
+.card {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
+
+.card {
+    margin-top:50px;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+
+    background-color: #fff;
+    /*border: 2px solid var(--red-color);*/
+    border-radius: 20px;
+
+    -webkit-box-shadow: 0px 0px 22px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 22px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 22px 0px rgba(0,0,0,0.75);
+}
+@media (max-width: 768px) {
+    .card{
+        margin-top: 90px;
+    }
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
+
+.gutters-sm {
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.gutters-sm>.col, .gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+.mb-3, .my-3 {
+    margin-bottom: 1rem!important;
+}
+
+.bg-gray-300 {
+    background-color: #e2e8f0;
+}
+.h-100 {
+    height: 100%!important;
+}
+.shadow-none {
+    box-shadow: none!important;
+}
+
+/* haw lal navigation 3al janab */
+
+.nav-pills .nav-link,
+.nav-pills .show>.nav-link {
+    font-weight: bold;
+    color: black;
+    font-size: 20px;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    background-color: var(--red-color);
+    border-radius: 20px;
+    font-weight: bold;
+}
+.nav-pills .nav-link:hover {
+    color: #ff0000;
+}
+.nav-pills .nav-link.active:hover{
+    color: white;
+}
+
+
+/*==================================================================================*/
+/* favorites section */
+/*==================================================================================*/
+
+.user-profile-favorites-section h2{
+    text-align: center;
+    margin: 40px 0px;
+}
+.user-profile-favorites-section ul{
+    list-style-type: none;
+}
+
+.favorite-dish-container{
+    border: 3px solid var(--red-color);
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.favorites-first-row{
+    font-weight: bold;
+    font-size: 24px;
+}
+.favorites-second-row{
+    font-size: 20px;
+}
+.favorites-third-row{
+    font-size: 20px;
+}
+.favorites-last-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 5px;
+
+}
+.favorites-last-row button{
+    border: none;
+    background-color: transparent;
+    padding: 4px;
+}
+.favorites-last-row button img{
+    height: 50px;
+    width: 50px;
+}
+
+
+
+
+
+/*==================================================================================*/
+/* address section */
+/*==================================================================================*/
+
+/* hw lal map  */
+#myMap {
+    height: 100vh;
+    width: 100vw;
+}
+#searchBoxContainer {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 9999;
+    /*background-color: var(--white-color);*/
+    padding: 8px;
+}
+#mapWrapper{
+    display: none;
+    transition: all 1s ease-in-out;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--white-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+.map-save-address-section{
+    background-color: var(--white-color);
+    position: fixed;
+    top: 0;
+    margin-top: 100px;
+    padding: 20px;
+    border-radius: 0px 100px 100px 0px;
+}
+#address-name-input{
+    border-radius: 15px;
+    padding: 3px 8px;
+    margin-bottom: 10px;
+}
+#saveAddressBtn{
+    border-radius: 10px;
+    padding: 5px 20px;
+    background-color: var(--red-color);
+    border: none;
+    color: white;
+    font-weight: bold;
+    margin: 10px 0px;
+}
+.close-map-btn{
+    border: none;
+    background-color: transparent;
+}
+#searchBox{
+    border-radius: 10px;
+    padding: 3px 15px;
+    border: none;
+}
+
+
+
+
+.user-profile-address-section h2{
+    text-align: center;
+    margin: 40px 0px;
+}
+.show-map-button{
+    border: none;
+    background-color: transparent;
+    margin-bottom: 0px;
+    width: 100%;
+}
+.show-map-image{
+    height: 100px;
+    width: 35%;
+}
+
+
+
+/* get_addresses.php elements */
+
+.user-profile-address-container{
+    list-style-type: none;
+    border: 2px solid var(--red-color);
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin-right: 40px;
+}
+.user-profile-address-first-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.user-profile-address-first-row span{
+    font-weight: bold;
+    font-size: 24px;
+}
+.user-profile-address-first-row button{
+    border: none;
+    background-color: transparent;
+    color: var(--red-color);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/*==================================================================================*/
+/* Order History Section */
+/*==================================================================================*/
+
+.user-profile-order-history-section h2{
+    text-align: center;
+    margin: 40px 0px;
+
+}
+.single-order-container{
+    border: 2px solid var(--red-color);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.single-order-container h4{
+    font-weight: bold;
+    font-size: 30px;
+}
+.order-total-amount{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*==================================================================================*/
+/* Settings Section */
+/*==================================================================================*/
+
+.user-profile-settings-section h2{
+    text-align: center;
+    margin: 40px 0px;
+}
+
+.settings-first-row{
+    margin: 10px 0px;
+}
+.settings-first-row label{
+    font-weight: bold;
+}
+.settings-first-row input{
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin-left: 30px;
+    width: 300px;
+}
+
+
+.settings-second-row{
+    margin: 10px 0px;
+}
+.settings-second-row label{
+    font-weight: bold;
+}
+.settings-second-row input{
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin-left: 30px;
+    width: 300px;
+}
+
+.settings-save-btn-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.settings-save-btn-container button{
+    border-radius: 10px;
+    border: none;
+    background-color: var(--red-color);
+    color: white;
+    font-weight: bold;
+    padding: 5px 30px;
+    margin: 15px;
+}
+.settings-signout-btn-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.settings-signout-btn-container input{
+    border-radius: 10px;
+    border: none;
+    background-color: var(--red-color);
+    color: white;
+    font-weight: bold;
+    padding: 5px 30px;
+    margin: 0px 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

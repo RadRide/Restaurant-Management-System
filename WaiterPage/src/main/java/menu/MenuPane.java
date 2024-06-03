@@ -42,7 +42,7 @@ public class MenuPane<T> extends FlowPane {
     public void setCategoryLabel(String category){
         categoryLabel = new Label(category);
         categoryLabel.getStyleClass().add("categoryLabel");
-        categoryLabel.prefWidthProperty().bind(controller.getDishScroll().widthProperty().multiply(0.9));
+        categoryLabel.prefWidthProperty().bind(controller.getDishScroll().widthProperty().multiply(0.95));
 
         getChildren().add(categoryLabel);
     }

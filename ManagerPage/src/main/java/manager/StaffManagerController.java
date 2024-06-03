@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import properties.Properties;
 import staff.Salary;
 import staff.Staff;
 import staff.Tip;
@@ -25,9 +26,7 @@ public class StaffManagerController{
     @FXML
     private Label warningLabel;
     @FXML
-    private MFXSlider ageSlider;
-    @FXML
-    private MFXDatePicker dateJoined;
+    private MFXDatePicker dateJoined, dateOfBirth;
     @FXML
     private MFXComboBox<String> shiftPicker, sectionPicker;
     @FXML
@@ -43,20 +42,6 @@ public class StaffManagerController{
     private Optional<ButtonType> clickedButton;
     private DBConnection connection;
     private final String pattern = "yyyy-MM-dd";
-
-//    @Override
-//    public void initialize(URL url, ResourceBundle resourceBundle) {
-//        connection = new DBConnection();
-//        if(ageSlider != null){
-//            ageNumber.setText(Integer.toString((int)ageSlider.getValue()));
-//            ageSlider.valueProperty().addListener(new ChangeListener<Number>() {
-//                @Override
-//                public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-//                    ageNumber.setText(Integer.toString((int)ageSlider.getValue()));
-//                }
-//            });
-//        }
-//    }
     
     public void openPane(int type, String tableName){
         // Open add dialog pane
@@ -75,8 +60,8 @@ public class StaffManagerController{
         if(clickedButton.isPresent()){
             connection.insertStaff(tableName, new Staff(capitalize(nameField.getText()), phoneField.getText(),
                         dateJoined.getValue().format(DateTimeFormatter.ofPattern(pattern)), shiftPicker.getValue(),
-                        sectionPicker.getValue(), (int)ageSlider.getValue(), new Salary(Double.parseDouble(usdField.getText()),
-                        Double.parseDouble(lbpField.getText())),generateId(type, tableName)));
+                        sectionPicker.getValue(), new Salary(Double.parseDouble(usdField.getText()),
+                        Double.parseDouble(lbpField.getText())),generateId(type, tableName), Properties.STAFF_DISABLED, dateOfBirth.getValue()));
             managerController.newStaff(type);
         }
     }
@@ -90,7 +75,7 @@ public class StaffManagerController{
         disableSection(tableName);
 
         nameField.setText(staff.getName());
-        ageSlider.setValue(staff.getAge());
+        dateOfBirth.setValue(staff.getDob());
         usdField.setText(String.valueOf(staff.getSalary().getUsd()));
         lbpField.setText(String.valueOf(staff.getSalary().getLbp()));
         phoneField.setText(staff.getPhoneNumber());
@@ -110,7 +95,7 @@ public class StaffManagerController{
         clickedButton = dialog.showAndWait();
         if(clickedButton.isPresent()){
             staff.setName(nameField.getText());
-            staff.setAge((int)ageSlider.getValue());
+            staff.setDob(dateOfBirth.getValue());
             staff.setSalary(new Salary(Double.parseDouble(usdField.getText()), Double.parseDouble(lbpField.getText())));
             staff.setPhoneNumber(phoneField.getText());
             staff.setShift(shiftPicker.getValue());
@@ -190,7 +175,7 @@ public class StaffManagerController{
     public void initializeFields(){
         // Links the Fields to the DialogPane
         nameField = (MFXTextField) staffPane.lookup("#nameField");
-        ageSlider = (MFXSlider) staffPane.lookup("#ageSlider");
+        dateOfBirth = (MFXDatePicker) staffPane.lookup("#dateOfBirth");
         usdField = (MFXTextField) staffPane.lookup("#usdField");
         lbpField = (MFXTextField) staffPane.lookup("#lbpField");
         phoneField = (MFXTextField) staffPane.lookup("#phoneField");

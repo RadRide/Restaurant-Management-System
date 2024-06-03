@@ -1,5 +1,6 @@
 package manager;
 
+import customer.Customer;
 import dbConnection.DBConnection;
 import export.ExcelConverter;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -22,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -30,7 +32,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import menu.Dish;
@@ -63,7 +64,7 @@ public class ManagerController implements Initializable {
 
     @FXML
     private BorderPane waiterPane, cashierPane, kitchenPane, managerPane, ordersPane, menuPane, inventoryPane,
-            qrCodePane, statPane, settingsPane;
+            qrCodePane, statPane, settingsPane, customerPane;
     @FXML
     private ScrollPane settingsScrollPane;
     @FXML
@@ -76,35 +77,34 @@ public class ManagerController implements Initializable {
     private PieChart salaryChartUSD, salaryChartLBP;
     @FXML
     private Label managerName, totalWaiter, totalCashier, totalKitchen, totalManager, totalMenu, totalItems,
-            totalOrders;
+            totalOrders, totalCustomer;
     @FXML
     private Button waiterButton, cashierButton, kitchenButton, managerButton, ordersButton, statButton, menuButton,
-            inventoryButton, qrCodeButton, settingsButton, logoutButton,
+            inventoryButton, customerButton, qrCodeButton, reportButton, settingsButton, logoutButton,
             addWaiter, addCashier, addKitchen, addManager, addMenu, addItem,
             removeWaiter, removeCashier, removeKitchen, removeManager, removeMenu, removeItem,
             editWaiter, editCashier, editKitchen, editManager, editMenu, editItem,
-            searchWaiters, searchCashiers, searchKitchen, searchManagers, searchMenu, searchInventory,
-            refreshWaiter, refreshCashier, refreshKitchen, refreshManager, refreshMenu, refreshInventory,
+            searchWaiters, searchCashiers, searchKitchen, searchManagers, searchMenu, searchInventory, searchCustomer,
+            refreshWaiter, refreshCashier, refreshKitchen, refreshManager, refreshMenu, refreshInventory, refreshCustomer,
             showOrderDetail, refreshOrder, searchOrder,
             idWaiter, idCashier, idKitchen, idManager,
             generateButton, chooseSaveLocationButton, saveButton, saveItemButton,
-            showTipsDistribution, exportInventoryButton,
-            restoreRateButton, saveRateButton, addSection, addTable, deleteSection, editSection, editTable,
+            showTipsDistribution, exportInventoryButton, showCustomerDetails,
+            restoreRateButton, saveRateButton, restoreDeliveryFeeButton, saveDeliveryFeeButton,
+            addSection, addTable, deleteSection, editSection, editTable,
             addDishCategory, editDishCategory, deleteDishCategory,
             addItemCategory, editItemCategory, deleteItemCategory,
             addUnit, editUnit, deleteUnit;
     @FXML
     private RadioButton tableRadio, inventoryRadio;
     @FXML
-    private FontIcon waiterIcon, cashierIcon, kitchenIcon, statIcon, menuIcon, managerIcon, ordersIcon, inventoryIcon,
-            qrCodeIcon, settingsIcon, logoutIcon;
-    @FXML
     private ChoiceBox<String> waiterSearchChoice, cashierSearchChoice, kitchenSearchChoice, managerSearchChoice,
-            menuSearchChoice, inventorySearchChoice, sectionChoice, tableNumberChoice, itemChoice, orderSearchChoice;
+            menuSearchChoice, inventorySearchChoice, sectionChoice, tableNumberChoice, itemChoice, orderSearchChoice,
+            customerSearchChoice;
     @FXML
     private TextField waiterSearchField, cashierSearchField, kitchenSearchField, managerSearchField, menuSearchField,
-            inventorySearchField, quantityField, rateField, sectionField, dishCategoryField,
-            itemCategoryField, unitField, orderSearchField;
+            inventorySearchField, quantityField, rateField, deliveryFeeField, sectionField, dishCategoryField,
+            itemCategoryField, unitField, orderSearchField, customerSearchField;
     @FXML
     private MFXTextField totalTipsField;
     @FXML
@@ -124,6 +124,8 @@ public class ManagerController implements Initializable {
     @FXML
     private TableView<InventoryItem> inventoryTable;
     @FXML
+    private TableView<Customer> customerTable;
+    @FXML
     private TableColumn<Staff, String> waiterNameColumn, cashierNameColumn, kitchenNameColumn, managerNameColumn,
             waiterSectionColumn, managerSectionColumn;
     @FXML
@@ -137,12 +139,17 @@ public class ManagerController implements Initializable {
     @FXML
     private TableColumn waiterShiftColumn, cashierShiftColumn, kitchenShiftColumn, managerShiftColumn;
     @FXML
+    private TableColumn waiterStatusColumn, cashierStatusColumn, kitchenStatusColumn, managerStatusColumn;
+    @FXML
     private TableColumn menuNameColumn, menuCategoryColumn;
     @FXML
     private TableColumn menuDescriptionColumn, menuStatusColumn, orderIdColumn, orderDateColumn, orderDiscountColumn,
             orderTotalColumn, orderTotalPaidColumn, orderSourceColumn;
     @FXML
     private TableColumn menuPriceColumn, menuCostColumn;
+    @FXML
+    private TableColumn customerNameColumn, customerIdColumn, customerPhoneColumn, customerEmailColumn,
+            customerFavoriteColumn;
     @FXML
     private TableColumn<InventoryItem, String> itemNameColumn, itemCategoryColumn, itemUnitColumn;
     @FXML
@@ -159,11 +166,11 @@ public class ManagerController implements Initializable {
     private ObservableList<Dish> dishes = FXCollections.observableArrayList();
     private ObservableList<InventoryItem> items = FXCollections.observableArrayList();
     private ObservableList<Order> orders = FXCollections.observableArrayList();
+    private ObservableList<Customer> customers = FXCollections.observableArrayList();
     private ObservableList<String> tipIntervalChoices = FXCollections.observableArrayList("This Month",
             "Last Month", "Last 30 Days", "This Week", "Last 7 days", "Today");
 
     private ArrayList<Button> buttons = new ArrayList<>();
-    private ArrayList<FontIcon> icons = new ArrayList<>();
     private ArrayList<BorderPane> panes = new ArrayList<>();
     private ArrayList<Category> dishCategory = new ArrayList<>(), itemCategory = new ArrayList<>();
     private ArrayList<Unit> units = new ArrayList<>();
@@ -171,6 +178,7 @@ public class ManagerController implements Initializable {
     private final String[] menuChoices = {"Name", "Category", "Cost","Price", "Description"};
     private final String[] inventoryChoices = {"Name", "Category", "Cost", "Unit", "Quantity"};
     private final String[] orderChoices = {"ID", "Discount", "Total", "Total Paid", "Source"};
+    private final String[] customerChoices = {"Name", "ID", "Phone Number", "Email"};
     private String qrData = "", qrName = "";
     private String ownerName = "";
     private double totalTips;
@@ -185,9 +193,6 @@ public class ManagerController implements Initializable {
     private Parent root;
     private Scene scene;
     private FXMLLoader loader;
-    private final Color lightGreen = Color.web("#5cd2c6"),
-            white = Color.web("#fefefe"),
-            darkBlue = Color.web("#363753");
 
 
     @Override
@@ -215,18 +220,17 @@ public class ManagerController implements Initializable {
 
             initializeOrderPane();
 
+            initCustomerPane();
         });
         buttons.addAll(Arrays.asList(waiterButton, cashierButton, kitchenButton, managerButton, statButton, menuButton,
-                inventoryButton, qrCodeButton, settingsButton, ordersButton));
-        icons.addAll(Arrays.asList(waiterIcon, cashierIcon, kitchenIcon, managerIcon, statIcon, menuIcon, inventoryIcon,
-                qrCodeIcon, settingsIcon, ordersIcon));
+                inventoryButton, qrCodeButton, settingsButton, ordersButton, customerButton));
         panes.addAll(Arrays.asList(waiterPane, cashierPane, kitchenPane, managerPane, statPane, menuPane, inventoryPane,
-                qrCodePane, settingsPane, ordersPane));
+                qrCodePane, settingsPane, ordersPane, customerPane));
     }
 
     /**
      * All the add buttons are linked to it and handles each add operation depending on pressed button
-     * @param event
+     * @param event The button which is pressed
      */
     public void addStaff(ActionEvent event){
 
@@ -483,6 +487,8 @@ public class ManagerController implements Initializable {
             targetPane = settingsPane;
         } else if (event.getSource() == ordersButton){
             targetPane = ordersPane;
+        }else if (event.getSource() == customerButton){
+            targetPane = customerPane;
         }
 
         if(targetPane != null){
@@ -538,7 +544,7 @@ public class ManagerController implements Initializable {
         if (event.getSource() == editManager) {
             StaffManagerController controller = new StaffManagerController();
             controller.setManagerController(this);
-            controller.openEditPane(waiterTable.getSelectionModel().getSelectedItem());
+            controller.openEditPane(managerTable.getSelectionModel().getSelectedItem());
             refreshStaff(managerTable, managers, "manager");
             managerTable.getSelectionModel().clearSelection();
             getManagerTotalSalaries();
@@ -634,32 +640,28 @@ public class ManagerController implements Initializable {
             refreshStaff(waiterTable, waiters, "waiter");
             getWaitersTotalSalaries();
             disableWaiterButtons();
-        }
-        if (event.getSource() == refreshCashier) {
+        }else if (event.getSource() == refreshCashier) {
             refreshStaff(cashierTable, cashiers, "cashier");
             getCashierTotalSalaries();
             disableCashierButtons();
-        }
-        if (event.getSource() == refreshKitchen) {
+        }else if (event.getSource() == refreshKitchen) {
             refreshStaff(kitchenTable, kitchens, "kitchen");
             getKitchenTotalSalaries();
             disableKitchenButtons();
-        }
-        if (event.getSource() == refreshManager) {
+        }else if (event.getSource() == refreshManager) {
             refreshStaff(managerTable, managers, "manager");
             getManagerTotalSalaries();
             disableManagerButtons();
-        }
-        if (event.getSource() == refreshMenu) {
+        }else if (event.getSource() == refreshMenu) {
             refreshDish();
             disableMenuButtons();
-        }
-        if (event.getSource() == refreshInventory) {
+        }else if (event.getSource() == refreshInventory) {
             refreshInventory();
             disableInventoryButtons();
-        }
-        if(event.getSource() == refreshOrder){
+        }else if(event.getSource() == refreshOrder){
             refreshOrderTable();
+        }else if(event.getSource() == refreshCustomer){
+            refreshCustomerTable();
         }
     }
     private void refreshStaff(TableView<Staff> table,ObservableList<Staff> list, String tableName){
@@ -883,6 +885,42 @@ public class ManagerController implements Initializable {
             orderTable.setItems(searchResult);
         }
     }
+    public void searchCustomers(ActionEvent event){
+        if(!customerSearchField.getText().isEmpty()){
+            ObservableList<Customer> searchResult = FXCollections.observableArrayList();
+            switch (customerSearchChoice.getValue()){
+                case "Name":
+                    for(Customer customer : customers){
+                        if(customer.getName().equals(capitalize(customerSearchField.getText()))){
+                            searchResult.add(customer);
+                        }
+                    }
+                    break;
+                case "ID":
+                    for(Customer customer : customers){
+                        if(customer.getId() == Integer.parseInt(customerSearchField.getText())){
+                            searchResult.add(customer);
+                        }
+                    }
+                    break;
+                case "Phone Number":
+                    for(Customer customer : customers){
+                        if(customer.getPhoneNumber().equals(customerSearchField.getText())){
+                            searchResult.add(customer);
+                        }
+                    }
+                    break;
+                case "Email":
+                    for(Customer customer : customers){
+                        if(customer.getEmail().equals(customerSearchField.getText())){
+                            searchResult.add(customer);
+                        }
+                    }
+                    break;
+            }
+            customerTable.setItems(searchResult);
+        }
+    }
     public String capitalize(String string){
         String[] name = string.split(" ");
         String capitalized = "";
@@ -894,6 +932,22 @@ public class ManagerController implements Initializable {
             }
         }
         return capitalized;
+    }
+
+    public void launchAI(ActionEvent event){
+        try{
+            FXMLLoader aiLoader = new FXMLLoader(getClass().getResource("/ai/AIPage.fxml"));
+            Parent root = aiLoader.load();
+            Scene aiScene = new Scene(root);
+            Stage aiStage = new Stage();
+            aiStage.setScene(aiScene);
+            aiStage.setTitle("Feast Planner Assistant");
+            aiStage.getIcons().add(new Image(getClass().getResource("/icons/AlphaBeta_Icon.png").openStream()));
+            aiStage.show();
+        }catch (IOException e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error Launching AI Assistant").showAndWait();
+        }
     }
 
     public void logout(ActionEvent event){
@@ -911,10 +965,6 @@ public class ManagerController implements Initializable {
 
             stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
-            stage.setMinWidth(810);
-            stage.setMinHeight(470);
-            stage.setWidth(810);
-            stage.setHeight(470);
             stage.setResizable(false);
             stage.show();
         }catch (IOException e){
@@ -972,7 +1022,7 @@ public class ManagerController implements Initializable {
     }
     public void chooseTableNumber(ActionEvent event){
         if(tableNumberChoice.getValue() != null){
-            qrData = "https://www.restaurant.com/&section=" + sectionChoice.getValue() + "&tableNumber=" + tableNumberChoice.getValue();
+            qrData = Properties.RESTAURANT_URL + tableNumberChoice.getValue();
             qrName = "Section " + sectionChoice.getValue() + ", Table Number " + tableNumberChoice.getValue() + ".jpg";
             generateButton.setDisable(false);
         }
@@ -1017,21 +1067,40 @@ public class ManagerController implements Initializable {
 
     public void initializeRateSection(){
         fillRateField();
-        restoreRateButton.setOnAction(this::restoreRate);
+        restoreRateButton.setOnAction(this::restoreField);
         saveRateButton.setOnAction(this::changeRate);
+    }
+    private void initializeDeliveryFeeSection(){
+        fillDeliveryFeeField();
+        restoreDeliveryFeeButton.setOnAction(this::restoreField);
+        saveDeliveryFeeButton.setOnAction(this::changeRate);
     }
     private void fillRateField(){
         rateField.setText(String.valueOf(rate));
     }
-    public void restoreRate(ActionEvent event){
-        fillRateField();
+    public void restoreField(ActionEvent event){
+        if(event.getSource() == restoreRateButton){
+            fillRateField();
+        }else if(event.getSource() == restoreDeliveryFeeButton){
+            fillDeliveryFeeField();
+        }
     }
     public void changeRate(ActionEvent event){
-        if(!rateField.getText().isEmpty()){
-            connection.changeRate(Integer.parseInt(rateField.getText()));
-            refreshRate();
-            refreshAll();
+        if(event.getSource() == saveRateButton){
+            if(!rateField.getText().isEmpty()){
+                connection.changeRate(Integer.parseInt(rateField.getText()));
+                refreshRate();
+                refreshAll();
+            }
+        }else if(event.getSource() == saveDeliveryFeeButton){
+            if(!deliveryFeeField.getText().isEmpty()){
+                connection.insertDeliveryFee(Double.parseDouble(deliveryFeeField.getText()));
+                fillDeliveryFeeField();
+            }
         }
+    }
+    public void fillDeliveryFeeField(){
+        deliveryFeeField.setText(String.valueOf(connection.getDeliveryFee()));
     }
 
     public void initializeTreeViewSection(){
@@ -1064,26 +1133,6 @@ public class ManagerController implements Initializable {
                 }
             }
         });
-//        sectionViewer.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<Section>>() {
-//            @Override
-//            public void changed(ObservableValue<? extends TreeItem<Section>> observableValue,
-//                                TreeItem<Section> sectionTreeItem, TreeItem<Section> t1) {
-//
-//                if(t1 != null){
-//                    if(t1.getValue().getName() == null){
-//                        disableSectionButtons(true);
-//                        disableTableButtons(false);
-//                        sectionField.clear();
-//                    }else{
-//                        sectionField.setText(t1.getValue().getName());
-//                        disableTableButtons(true);
-//                        disableSectionButtons(false);
-//                    }
-//                }else{
-//                    disableAllSectionButtons(true);
-//                }
-//            }
-//        });
 
         addSection.setOnAction(this::addStaff);
         sectionField.setOnKeyTyped(this::checkTextField);
@@ -1112,9 +1161,6 @@ public class ManagerController implements Initializable {
 //        }
 //        sectionViewer.setRoot(rootItem);
     }
-//    public void testTreeView(){
-
-//    }
 
     public void initializeDishCategorySection(){
         refreshDishViewer();
@@ -1276,28 +1322,16 @@ public class ManagerController implements Initializable {
             }
         });
 
-        removeWaiter.setOnAction(this::remove);
-        editWaiter.setOnAction(this::openEditPane);
-        searchWaiters.setOnAction(this::search);
-        idWaiter.setOnAction(this::showId);
+        initStaffButtons(addWaiter, searchWaiters, removeWaiter, editWaiter, idWaiter);
         getWaitersTotalSalaries();
 
     }
 
     public void initializeWaiterTable(){
-
-        waiterNameColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("name"));
-        waiterAgeColumn.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("age"));
-        waiterPhoneColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("phoneNumber"));
-        waiterSalaryColumn.setCellValueFactory(new PropertyValueFactory<Staff, Salary>("salary"));
-        waiterDateColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("dateJoined"));
-        waiterShiftColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("shift"));
-        waiterSectionColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("section"));
+        initStaffColumns(waiterNameColumn, waiterAgeColumn, waiterPhoneColumn, waiterSalaryColumn,
+                waiterShiftColumn, waiterDateColumn, waiterSectionColumn, waiterStatusColumn);
 
         refreshStaff(waiterTable, waiters, "waiter");
-
-//        waiterTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); // So We can select more than one
-
     }
 
     public void initializeCashierPane(){
@@ -1319,25 +1353,17 @@ public class ManagerController implements Initializable {
             }
         });
 
-        editCashier.setOnAction(this::openEditPane);
-        removeCashier.setOnAction(this::remove);
-        searchCashiers.setOnAction(this::search);
-        idCashier.setOnAction(this::showId);
+        initStaffButtons(addCashier, searchCashiers, removeCashier, editCashier, idCashier);
+
         getCashierTotalSalaries();
 
     }
 
     public void initializeCashierTable(){
-
-         cashierNameColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("name"));
-         cashierAgeColumn.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("age"));
-         cashierPhoneColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("phoneNumber"));
-         cashierSalaryColumn.setCellValueFactory(new PropertyValueFactory<Staff, Salary>("salary"));
-         cashierDateColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("dateJoined"));
-         cashierShiftColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("shift"));
+         initStaffColumns(cashierNameColumn, cashierAgeColumn, cashierPhoneColumn, cashierSalaryColumn,
+                 cashierShiftColumn, cashierDateColumn, null, cashierStatusColumn);
 
         refreshStaff(cashierTable, cashiers, "cashier");
-
     }
 
     public void initializeKitchenPane(){
@@ -1358,20 +1384,13 @@ public class ManagerController implements Initializable {
             }
         });
 
-        getKitchenTotalSalaries();
+        initStaffButtons(addKitchen, searchKitchen, removeKitchen, editKitchen, idKitchen);
 
-        removeKitchen.setOnAction(this::remove);
-        editKitchen.setOnAction(this::openEditPane);
-        searchKitchen.setOnAction(this::search);
-        idKitchen.setOnAction(this::showId);
+        getKitchenTotalSalaries();
     }
     public void initializeKitchenTable(){
-        kitchenNameColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("name"));
-        kitchenAgeColumn.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("age"));
-        kitchenPhoneColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("phoneNumber"));
-        kitchenSalaryColumn.setCellValueFactory(new PropertyValueFactory<Staff, Salary>("salary"));
-        kitchenDateColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("dateJoined"));
-        kitchenShiftColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("shift"));
+        initStaffColumns(kitchenNameColumn, kitchenAgeColumn, kitchenPhoneColumn, kitchenSalaryColumn,
+                kitchenShiftColumn, kitchenDateColumn, null, kitchenStatusColumn);
 
         refreshStaff(kitchenTable, kitchens, "kitchen");
     }
@@ -1396,25 +1415,78 @@ public class ManagerController implements Initializable {
             }
         });
 
-        addManager.setOnAction(this::addStaff);
-        searchManagers.setOnAction(this::search);
-        removeManager.setOnAction(this::remove);
-        editManager.setOnAction(this::openEditPane);
-        idManager.setOnAction(this::showId);
+        initStaffButtons(addManager, searchManagers, removeManager, editManager, idManager);
 
         getManagerTotalSalaries();
 
     }
-    public void initializeManagerTable(){
-        managerNameColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("name"));
-        managerAgeColumn.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("age"));
-        managerPhoneColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("phoneNumber"));
-        managerSalaryColumn.setCellValueFactory(new PropertyValueFactory<Staff, Salary>("salary"));
-        managerDateColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("dateJoined"));
-        managerShiftColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("shift"));
-        managerSectionColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("section"));
+    private void initializeManagerTable(){
+        initStaffColumns(managerNameColumn, managerAgeColumn, managerPhoneColumn, managerSalaryColumn,
+                managerDateColumn, managerShiftColumn, managerSectionColumn, managerStatusColumn);
 
         refreshStaff(managerTable, managers, "manager");
+    }
+
+    /**
+     * Assigns each staff's button to a specific action
+     * @param add
+     * @param search
+     * @param remove
+     * @param edit
+     * @param id
+     */
+    private void initStaffButtons(Button add, Button search, Button remove, Button edit, Button id){
+        add.setOnAction(this::addStaff);
+        search.setOnAction(this::search);
+        remove.setOnAction(this::remove);
+        edit.setOnAction(this::openEditPane);
+        id.setOnAction(this::showId);
+    }
+
+    /**
+     * Initializes each column in the staff's tables
+     * @param nameColumn
+     * @param ageColumn
+     * @param phoneColumn
+     * @param salaryColumn
+     * @param shiftColumn
+     * @param sectionColumn
+     * @param statusColumn
+     */
+    private void initStaffColumns(TableColumn nameColumn, TableColumn ageColumn, TableColumn phoneColumn,
+                                  TableColumn salaryColumn, TableColumn shiftColumn, TableColumn dateColumn,TableColumn sectionColumn,
+                                  TableColumn statusColumn){
+        nameColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("name"));
+        ageColumn.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("age"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("phoneNumber"));
+        salaryColumn.setCellValueFactory(new PropertyValueFactory<Staff, Salary>("salary"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("dateJoined"));
+        shiftColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("shift"));
+
+        if(sectionColumn != null){
+            sectionColumn.setCellValueFactory(new PropertyValueFactory<Staff, String>("section"));
+        }
+
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("statusButton"));
+
+        statusColumn.setCellFactory(column -> {
+            return new TableCell<Staff, ToggleSwitch>(){
+                @Override
+                public void updateItem(ToggleSwitch statusButton, boolean empty){
+                    if(empty){
+                        setText(null);
+                        setGraphic(null);
+                        setStyle(null);
+                    }else{
+                        setGraphic(statusButton);
+                        setStyle("-fx-border-width: 0 0 2 0;" +
+                                "-fx-border-style: solid;" +
+                                "-fx-border-color: #fefefe;" +
+                                "-fx-alignment: center;");
+                    }
+                }
+            };
+        });
     }
 
     public void initializeMenuPane(){
@@ -1454,10 +1526,12 @@ public class ManagerController implements Initializable {
                 @Override
                 public void updateItem(ChoiceBox<Ingredient> ingredients, boolean empty){
                     super.updateItem(ingredients, empty);
-                    if (empty || ingredients == null || ingredients.getItems().isEmpty()) {
+                    if (empty || ingredients == null) {
                         setText(null);
                         setGraphic(null);
-                    } else {
+                    }else if(ingredients.getItems().isEmpty()){
+                        setText("No Ingredients");
+                    }else {
                         ingredients.setValue(ingredients.getItems().get(0));
                         setGraphic(ingredients);
                     }
@@ -1474,12 +1548,6 @@ public class ManagerController implements Initializable {
                         setGraphic(null);
                     }else{
                         setGraphic(statusButton);
-//                        statusButton.selectedProperty().addListener(new ChangeListener<Boolean>() {
-//                            @Override
-//                            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//                                refreshDish();
-//                            }
-//                        });
                     }
                 }
             };
@@ -1556,45 +1624,27 @@ public class ManagerController implements Initializable {
         salaryChartUSD.setLegendVisible(false);
         salaryChartLBP.setLegendVisible(false);
 
-        XYChart.Series<String, Double> revenueData = new XYChart.Series<>();
-        revenueData.setName("Revenue In USD");
-        revenueData.getData().add(new XYChart.Data<>("May", 52360.0));
-        revenueData.getData().add(new XYChart.Data<>("June", 78062.0));
-        revenueData.getData().add(new XYChart.Data<>("July", 40000.0));
-        revenueData.getData().add(new XYChart.Data<>("May1", 52360.0));
-        revenueData.getData().add(new XYChart.Data<>("June1", 78062.0));
-        revenueData.getData().add(new XYChart.Data<>("July1", 40000.0));
-        XYChart.Series<String, Double> revenueData2 = new XYChart.Series<>();
-        revenueData2.setName("Revenue In LBP");
-        revenueData2.getData().add(new XYChart.Data<>("May", 72360.0));
-        revenueData2.getData().add(new XYChart.Data<>("June", 38062.0));
-        revenueData2.getData().add(new XYChart.Data<>("July", 60000.0));
-        revenueData2.getData().add(new XYChart.Data<>("May1", 82360.0));
-        revenueData2.getData().add(new XYChart.Data<>("June1", 8062.0));
-        revenueData2.getData().add(new XYChart.Data<>("July1", 30800.0));
-        revenueChart.getData().addAll(revenueData, revenueData2);
+        revenueChart.getData().addAll(connection.getRevenue());
         revenueChart.setLegendVisible(true);
-        // Shows Value of Data on hover
-        for(XYChart.Series<String, Double> s : revenueChart.getData()){
-            for(XYChart.Data<String, Double> d : s.getData()){
-                Tooltip tp = new Tooltip("$ " + formatter.format(d.getYValue()));
+        for(int i = 0; i < revenueChart.getData().size(); i++){
+            String currency;
+            int mult = 1;
+            if(i == 0){
+                currency = "$ ";
+                mult = 1;
+            }else{
+                currency = "LBP ";
+                mult = 1_000_0;
+            }
+            for(XYChart.Data<String, Double> d : revenueChart.getData().get(i).getData()){
+                Tooltip tp = new Tooltip(currency + formatter.format(d.getYValue() * mult));
                 tp.setFont(new Font(14));
                 tp.setShowDelay(Duration.ZERO);
                 Tooltip.install(d.getNode(), tp);
             }
         }
 
-        XYChart.Series<String, Integer> topDishes = new XYChart.Series<>();
-        topDishes.setName("Top Dishes");
-        topDishes.getData().add(new XYChart.Data<>("Fattoush", 23));
-        topDishes.getData().add(new XYChart.Data<>("Tabouleh", 178));
-        topDishes.getData().add(new XYChart.Data<>("Chicken Sub", 13));
-        topDishes.getData().add(new XYChart.Data<>("Pizza", 6));
-        topDishes.getData().add(new XYChart.Data<>("Fattoush1", 20));
-        topDishes.getData().add(new XYChart.Data<>("Tabouleh1", 78));
-        topDishes.getData().add(new XYChart.Data<>("Chicken Sub1", 12));
-        topDishes.getData().add(new XYChart.Data<>("Pizza1", 9));
-        topDishChart.getData().add(topDishes);
+        topDishChart.getData().add(connection.getTopDishes());
         topDishChart.setLegendVisible(false);
         for(XYChart.Data<String, Integer> d : topDishChart.getData().get(0).getData()){
             Tooltip tp = new Tooltip(d.getXValue() + ": " + formatter.format(d.getYValue()));
@@ -1615,7 +1665,7 @@ public class ManagerController implements Initializable {
         totalSalaries.add(totalManagers);
 
         ObservableList<PieChart.Data> salaryDataUSD = FXCollections.observableArrayList(
-                new PieChart.Data("Managers\n$" + formatter.format(totalManagers.getUsd()), totalManagers.getUsd()),
+                new PieChart.Data("Supervisors\n$" + formatter.format(totalManagers.getUsd()), totalManagers.getUsd()),
                 new PieChart.Data("Waiters\n$" + formatter.format(totalWaiters.getUsd()), totalWaiters.getUsd()),
                 new PieChart.Data("Cashiers\n$" + formatter.format(totalCashiers.getUsd()), totalCashiers.getUsd()),
                 new PieChart.Data("Kitchen Staff\n$" + formatter.format(totalKitchen.getUsd()), totalKitchen.getUsd())
@@ -1625,7 +1675,7 @@ public class ManagerController implements Initializable {
         salaryChartUSD.setTitle("Total Salaries: $ " + formatter.format(totalSalaries.getUsd()));
 
         ObservableList<PieChart.Data> salaryDataLBP = FXCollections.observableArrayList(
-                new PieChart.Data("Managers\nLBP" + formatter.format(totalManagers.getLbp()), totalManagers.getLbp()),
+                new PieChart.Data("Supervisors\nLBP" + formatter.format(totalManagers.getLbp()), totalManagers.getLbp()),
                 new PieChart.Data("Waiters\nLBP" + formatter.format(totalWaiters.getLbp()), totalWaiters.getLbp()),
                 new PieChart.Data("Cashiers\nLBP" + formatter.format(totalCashiers.getLbp()), totalCashiers.getLbp()),
                 new PieChart.Data("Kitchen Staff\nLBP" + formatter.format(totalKitchen.getLbp()), totalKitchen.getLbp())
@@ -1652,7 +1702,6 @@ public class ManagerController implements Initializable {
 
     public void initializeSideBar(){
         connection = new DBConnection();
-
         // Gets exchange rate from the database
         refreshRate();
 
@@ -1673,7 +1722,8 @@ public class ManagerController implements Initializable {
         statButton.setOnAction(this::switchPanes);
         settingsButton.setOnAction(this::switchPanes);
         logoutButton.setOnAction(this::logout);
-
+        customerButton.setOnAction(this::switchPanes);
+        reportButton.setOnAction(this::launchAI);
     }
 
     private void initSideButtons(){
@@ -1684,6 +1734,7 @@ public class ManagerController implements Initializable {
 
     public void initializeSettingsPane(){
         initializeRateSection();
+        initializeDeliveryFeeSection();
         initializeTreeViewSection();
         initializeDishCategorySection();
         initializeItemCategorySection();
@@ -1737,6 +1788,73 @@ public class ManagerController implements Initializable {
         controller.showDetailsPane(orderTable.getSelectionModel().getSelectedItem());
     }
 
+    private void initCustomerPane(){
+        initCustomerTable();
+
+//        CustomerDetailsController controller = new CustomerDetailsController();
+//        controller.openCustomerDetails(customerButton.getScene().getWindow(), null);
+
+        customerSearchChoice.getItems().addAll(customerChoices);
+        customerSearchChoice.setValue(customerChoices[0]);
+
+        showCustomerDetails.setDisable(true);
+
+        showCustomerDetails.setOnAction(this::showCustomerDetails);
+        searchCustomer.setOnAction(this::searchCustomers);
+    }
+
+    private void initCustomerTable(){
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
+        customerNameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+        customerEmailColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("email"));
+        customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
+        customerFavoriteColumn.setCellValueFactory(new PropertyValueFactory<>("favoriteDishesCombo"));
+
+        customerFavoriteColumn.setCellFactory(column -> {
+            return new TableCell<Customer, ChoiceBox<Dish>>() {
+                @Override
+                public void updateItem(ChoiceBox<Dish> favoriteDishes, boolean empty){
+                    super.updateItem(favoriteDishes, empty);
+                    if(empty){
+                        setText(null);
+                        setGraphic(null);
+                    }else if(favoriteDishes.getItems().isEmpty()){
+                        setText("No Favorite Dishes");
+                    }else{
+                        setGraphic(favoriteDishes);
+                    }
+                }
+            };
+        });
+
+        customerTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Customer>() {
+            @Override
+            public void changed(ObservableValue<? extends Customer> observableValue, Customer customer, Customer t1) {
+                if(t1 != null){
+                    showCustomerDetails.setDisable(false);
+                }else{
+                    showCustomerDetails.setDisable(true);
+                }
+            }
+        });
+
+        refreshCustomerTable();
+    }
+
+    public void refreshCustomerTable(){
+        customerTable.getSelectionModel().clearSelection();
+        customers.clear();
+        customers.addAll(connection.getCustomers());
+        customerTable.setItems(customers);
+        countCustomers();
+    }
+
+    public void showCustomerDetails(ActionEvent event){
+        CustomerDetailsController controller = new CustomerDetailsController();
+        controller.openCustomerDetails(((Node) event.getSource()).getScene().getWindow(),
+                customerTable.getSelectionModel().getSelectedItem());
+    }
+
     /***** OWNER PANE INITIALIZATION ******/
 
     /***** TOTALS CALCULATION *****/
@@ -1772,6 +1890,7 @@ public class ManagerController implements Initializable {
         totalManager.setText(total.getTotalString());
         return total;
     }
+
     public void countDishes(){
         totalMenu.setText(dishes.size() + "");
     }
@@ -1794,6 +1913,9 @@ public class ManagerController implements Initializable {
             }
         }
         totalOrders.setText(numberOfOrders + " / $ " + formatter.format(totalUSD) + " / LBP " + formatter.format(totalLBP));
+    }
+    public void countCustomers(){
+        totalCustomer.setText(String.valueOf(customers.size()));
     }
     /***** TOTALS CALCULATION *****/
 
@@ -1861,6 +1983,7 @@ public class ManagerController implements Initializable {
         deleteUnit.setDisable(disabled);
     }
     /***** CHANGE BUTTON STATE *****/
+
     /**
      * Binds the border pane to the respective button. the styling of the button will change depending
      * on the visibility of the borderPane

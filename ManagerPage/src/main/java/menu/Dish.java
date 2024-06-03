@@ -46,14 +46,20 @@ public class Dish {
         this.category = category;
         this.price = price;
         this.ingredients = ingredients;
-        this.ingredientList = FXCollections.observableArrayList(ingredients);
+        this.ingredientList = FXCollections.observableArrayList(this.ingredients);
         this.id = id;
         setStatus(active);
-        setDescription(ingredients);
+        setDescription(this.ingredients);
         this.active = active;
         connection = new DBConnection();
         setStatusButton();
         setCost();
+    }
+
+    public Dish(String name, double price, int id){
+        this.name = name;
+        this.id = id;
+        this.price = price;
     }
 
     public String getName() {
@@ -163,5 +169,10 @@ public class Dish {
 
     public ToggleSwitch getStatusButton(){
         return statusButton;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

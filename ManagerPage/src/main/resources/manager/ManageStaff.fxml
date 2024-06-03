@@ -2,7 +2,6 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
-<?import io.github.palexdev.materialfx.controls.MFXSlider?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.scene.control.ButtonType?>
 <?import javafx.scene.control.DialogPane?>
@@ -14,11 +13,6 @@
    <content>
       <AnchorPane maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" styleClass="background" stylesheets="@../Styles/DialogStyles.css">
          <children>
-            <Label layoutX="27.0" layoutY="58.0" prefHeight="38.0" prefWidth="48.0" text="Age:" textFill="#203647">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
             <MFXTextField fx:id="nameField" floatingText="Name" layoutX="25.0" layoutY="14.0" prefHeight="38.0" prefWidth="405.0" styleClass="textField" />
             <MFXTextField fx:id="phoneField" floatingText="Phone Number" layoutX="25.0" layoutY="102.0" prefHeight="38.0" prefWidth="405.0" styleClass="textField" />
             <MFXTextField fx:id="lbpField" floatingText="Salary(LBP)" layoutX="230.0" layoutY="148.0" prefHeight="38.0" prefWidth="200.0" styleClass="textField" />
@@ -26,7 +20,7 @@
             <MFXTextField fx:id="usdField" floatingText="Salary($)" layoutX="25.0" layoutY="148.0" prefHeight="38.0" prefWidth="200.0" styleClass="textField" />
             <MFXComboBox fx:id="shiftPicker" floatingText="Shift" layoutX="25.0" layoutY="242.0" prefWidth="200.0" styleClass="filteredCombo" />
             <MFXComboBox fx:id="sectionPicker" floatingText="Section" layoutX="230.0" layoutY="242.0" prefWidth="200.0" styleClass="filteredCombo" />
-            <MFXSlider fx:id="ageSlider" layoutX="92.0" layoutY="77.0" minorTicksCount="0" popupSide="OTHER_SIDE" prefHeight="7.0" prefWidth="337.0" styleClass="mfx-slider" stylesheets="@../Styles/DialogStyles.css" tickUnit="1.0" value="25.0" />
+            <MFXDatePicker fx:id="dateOfBirth" floatingText="Date Of Birth" layoutX="25.0" layoutY="58.0" prefHeight="38.0" prefWidth="405.0" styleClass="datePicker" />
          </children>
       </AnchorPane>
    </content>

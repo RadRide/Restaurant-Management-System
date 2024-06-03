@@ -62,8 +62,6 @@ public class WaiterPageController implements Initializable {
     public void refreshCategoryBox(){
         categoryBox.getChildren().clear();
         categoryBox.getChildren().addAll(connection.getCategoryButtons());
-        categoryBox.getChildren().addAll(connection.getCategoryButtons());
-        categoryBox.getChildren().addAll(connection.getCategoryButtons());
     }
     /**
      * Populates the sidebar with section buttons
@@ -78,8 +76,6 @@ public class WaiterPageController implements Initializable {
      */
     public void refreshDishBox(){
         dishBox.getChildren().clear();
-        dishBox.getChildren().addAll(connection.getMenu());
-        dishBox.getChildren().addAll(connection.getMenu());
         dishBox.getChildren().addAll(connection.getMenu());
 
         refreshTotal();

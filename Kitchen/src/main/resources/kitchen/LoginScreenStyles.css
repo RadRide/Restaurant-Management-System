@@ -1,0 +1,38 @@
+.background{
+    /*-fx-background-color: linear-gradient(to bottom right, #5cd2c6, #5AE881);*/
+    /*-fx-background-color: radial-gradient(center 50% 50% , radius 10rem ,#5cd2c6, #5AE881);*/
+    /*-fx-background-color: radial-gradient(focus-angle 45deg , focus-distance 20% , center 25% 25% , radius 50% , reflect, #fb8b3d, #a70024 80% , #be158a);*/
+    -fx-background-color: radial-gradient(focus-angle 45deg , focus-distance 20% , center 25% 25% , radius 50% , reflect, #dd2b2b, #e06e2b 80% , #df9e29);
+}
+
+.loginPane{
+    -fx-background-color: #fefefe;
+    -fx-background-radius: 7%;
+}
+
+.loginField{
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: #050a30;
+    -fx-text-fill: #050a30;
+    -fx-prompt-text-fill: rgba(5, 10, 48, 0.7);
+}
+
+.numberButton{
+    -fx-background-color: transparent;
+    -fx-border-width: 3px;
+    -fx-border-color: #050a30;
+    -fx-border-radius: 50%;
+    -fx-text-fill: #050a30;
+    /*-fx-text-alignment: center;*/
+}
+.numberButton .ikonli-font-icon{
+    -fx-icon_color: #050a30;
+}
+.numberButton:pressed{
+    -fx-border-color: #fb8b3d;
+    -fx-text-fill: #fb8b3d;
+}
+.numberButton:pressed .ikonli-font-icon{
+    -fx-icon-color: #fb8b3d;
+}

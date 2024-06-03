@@ -76,6 +76,30 @@
 }
 /***** DATE PICKER SECTION *****/
 
+/***** FILTERED COMBO BOX SECTION *****/
+.filteredCombo .scroll-bar:vertical .thumb{
+    -fx-background-color: -fx-blue;
+}
+.filteredCombo:focus-within .caret .mfx-font-icon{
+    -mfx-color: -fx-lightBlue;
+}
+.filteredCombo:focus-within .caret .mfx-ripple-generator{
+    -mfx-ripple-color: -fx-lightBlue;
+}
+.filteredCombo .virtual-flow .mfx-combo-box-cell:selected{
+    -fx-background-color: -fx-lightBlue;
+}
+.filteredCombo .virtual-flow .mfx-combo-box-cell:hover{
+    -fx-background-color: -fx-hoverLightBlue;
+}
+.filteredCombo .virtual-flow .mfx-combo-box-cell:selected .label{
+    -fx-text-fill: -fx-white;
+}
+.filteredCombo .virtual-flow .mfx-combo-box-cell:hover:selected{
+    -fx-background-color: -fx-lightBlue;
+}
+/***** FILTERED COMBO BOX SECTION *****/
+
 .mfx-slider .track {
     -fx-background-color: red;
 }
@@ -113,4 +137,35 @@
 
 .dialogLabel {
     -fx-text-fill: -fx-blueGrey;
+}
+
+.dialogBtn{
+    -fx-background-color: -fx-lightGrey;
+
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-blueGrey;
+
+    -fx-padding: 5 10 5 10;
+}
+.dialogBtn .mfx-ripple-generator{
+    -mfx-ripple-color: -fx-lightBlue;
+}
+
+.background .header-label{
+    -fx-text-fill: -fx-darkBlue;
+    -fx-alignment: center;
+}
+
+.infoLabel{
+    -fx-text-fill: -fx-darkBlue;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-padding: 0 5 0 0;
+}
+
+.descriptionLabel{
+    -fx-text-fill: -fx-lightBlue;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-padding: 0 5 0 0;
 }

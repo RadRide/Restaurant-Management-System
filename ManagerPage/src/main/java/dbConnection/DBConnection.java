@@ -1,9 +1,15 @@
 package dbConnection;
 
 
-import javafx.collections.FXCollections;
+import customer.Address;
+import customer.Customer;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Tooltip;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
+import order.DeliveryOrder;
+import properties.Properties;
 import staff.Salary;
 import staff.Staff;
 import menu.Dish;
@@ -110,9 +116,9 @@ public class DBConnection {
         while (resultSet.next()){
             list.add(new Staff(resultSet.getString(tableName + "_name"), resultSet.getString(tableName + "_phone"),
                     resultSet.getDate(tableName + "_date_joined").toString(), resultSet.getString(tableName + "_shift"),
-                    resultSet.getString(tableName + "_section"), resultSet.getInt(tableName + "_age"),
-                    new Salary(resultSet.getDouble(tableName + "_salary_usd"), resultSet.getDouble(tableName + "_salary_lbp")),
-                    resultSet.getInt(tableName + "_id")));
+                    resultSet.getString(tableName + "_section"), new Salary(resultSet.getDouble(tableName + "_salary_usd"),
+                    resultSet.getDouble(tableName + "_salary_lbp")), resultSet.getInt(tableName + "_id"),
+                    resultSet.getInt(tableName + "_status"), resultSet.getTimestamp(tableName + "_dob").toLocalDateTime().toLocalDate()));
         }
     }
     /**
@@ -126,10 +132,11 @@ public class DBConnection {
         String query = "SELECT * FROM " + tableName + ";";
         resultSet = statement.executeQuery(query);
         while (resultSet.next()){
-            list.add(new Staff(resultSet.getString(tableName + "_name"), resultSet.getInt(tableName + "_age"),
-                    new Salary(resultSet.getDouble(tableName + "_salary_usd"), resultSet.getDouble(tableName + "_salary_lbp")),
-                    resultSet.getString(tableName + "_phone"), resultSet.getDate(tableName + "_date_joined").toString(),
-                    resultSet.getString(tableName + "_shift"), resultSet.getInt(tableName + "_id")));
+            list.add(new Staff(resultSet.getString(tableName + "_name"), new Salary(resultSet.getDouble(tableName + "_salary_usd"),
+                    resultSet.getDouble(tableName + "_salary_lbp")), resultSet.getString(tableName + "_phone"),
+                    resultSet.getDate(tableName + "_date_joined").toString(), resultSet.getString(tableName + "_shift"),
+                    resultSet.getInt(tableName + "_id"),  resultSet.getInt(tableName + "_status"),
+                    resultSet.getTimestamp(tableName + "_dob").toLocalDateTime().toLocalDate()));
         }
     }
 
@@ -201,7 +208,7 @@ public class DBConnection {
             resultSet = statement.executeQuery(query);
             while (resultSet.next()){
                 items.add(new InventoryItem(resultSet.getString("item_name"), resultSet.getString("item_unit"),
-                        resultSet.getString("item_category"), resultSet.getDouble("item_quantity"),
+                        resultSet.getString("item_category"), Properties.round(resultSet.getDouble("item_quantity"), 2),
                         resultSet.getDouble("item_cost"), resultSet.getInt("item_id")));
             }
             closeConnection();
@@ -267,21 +274,62 @@ public class DBConnection {
         ArrayList<Order> list = new ArrayList<>();
         try{
             openConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM restaurantdb.order");
-            while (resultSet.next()){
-                list.add(new Order(resultSet.getInt("order_id"), resultSet.getInt("order_table"),
-                        resultSet.getTimestamp("order_date").toLocalDateTime(), resultSet.getDouble("order_discount"),
-                        resultSet.getDouble("order_total_usd"), resultSet.getDouble("order_total_lbp"),
-                        resultSet.getDouble("order_paid_usd"), resultSet.getDouble("order_paid_lbp"),
-                        getOrderItems(resultSet.getInt("order_id"))));
-            }
-            statement.close();
+            list.addAll(getDineInOrders());
+            list.addAll(getDeliveryOrders());
             closeConnection();
             return list;
         }catch (SQLException e){
             e.printStackTrace();
-            showAlert("Error Retrieving Orders");
+            showAlert("Error Retrieving Orders From Database");
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves all the dine in orders from the database
+     * @return A list of dine in orders
+     * @throws SQLException If connection to the database failed
+     */
+    private ArrayList<Order> getDineInOrders() throws SQLException{
+        ArrayList<Order> list = new ArrayList<>();
+        if(connection.isClosed()){
+            openConnection();
+        }
+        statement = connection.createStatement();
+        resultSet = statement.executeQuery("SELECT * FROM restaurantdb.order AS o WHERE o.order_table != " + Properties.DELIVERY);
+        while (resultSet.next()){
+            list.add(new Order(resultSet.getInt("order_id"), resultSet.getInt("order_table"),
+                    resultSet.getInt("order_status"), resultSet.getTimestamp("order_date").toLocalDateTime(),
+                    resultSet.getDouble("order_discount"), resultSet.getDouble("order_total_usd"),
+                    resultSet.getDouble("order_total_lbp"), resultSet.getDouble("order_paid_usd"),
+                    resultSet.getDouble("order_paid_lbp"), getOrderItems(resultSet.getInt("order_id"))));
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves all the delivery orders from the database
+     * @return A list of delivery orders
+     * @throws SQLException If the connection to the database failed
+     */
+    private ArrayList<DeliveryOrder> getDeliveryOrders() throws SQLException{
+        ArrayList<DeliveryOrder> list = new ArrayList<>();
+        if(connection.isClosed()){
+            openConnection();
+        }
+        statement = connection.createStatement();
+        resultSet = statement.executeQuery("SELECT o.order_id, o.order_date, o.order_discount, o.order_total_usd, " +
+                "o.order_total_lbp, o.order_paid_usd, o.order_paid_lbp, o.order_status, c.customer_name, f.fee AS fee FROM restaurantdb.order AS o, " +
+                "delivery_order AS d, customer AS c, delivery_fee AS f WHERE o.order_id = d.order_id AND d.customer_id = c.customer_name " +
+                "AND f.id = d.delivery_fee AND o.order_table = " + Properties.DELIVERY);
+        while (resultSet.next()){
+            list.add(new DeliveryOrder(resultSet.getInt("order_id"), Properties.DELIVERY,
+                    resultSet.getInt("order_status"), resultSet.getTimestamp("order_date").toLocalDateTime(),
+                    resultSet.getDouble("order_discount"), resultSet.getDouble("order_total_usd"),
+                    resultSet.getDouble("order_total_lbp"), resultSet.getDouble("order_paid_usd"),
+                    resultSet.getDouble("order_paid_lbp"), getOrderItems(resultSet.getInt("order_id")),
+                    getSingleOrderAddress(resultSet.getInt("order_id")), resultSet.getString("customer_name"),
+                    resultSet.getDouble("fee")));
         }
         return list;
     }
@@ -362,12 +410,12 @@ public class DBConnection {
             openConnection();
             statement = connection.createStatement();
             String query = "SELECT SUM(order_paid_usd) AS total_usd, SUM(order_paid_lbp) AS total_lbp, " +
-                    "CONCAT(MONTH(order_date), ' ', YEAR(order_date)) AS revenue_date FROM restaurantdb.order WHERE " +
-                    "order_date BETWEEN CURDATE() - INTERVAL 6 MONTH AND CURDATE() GROUP BY revenue_date";
+                    "DATE_FORMAT(order_date, '%M %Y') AS revenue_date FROM restaurantdb.order WHERE " +
+                    "order_date BETWEEN CURDATE() - INTERVAL 6 MONTH AND CURDATE() GROUP BY revenue_date ORDER BY revenue_date";
             resultSet = statement.executeQuery(query);
             while (resultSet.next()){
                 revenueUSD.getData().add(new XYChart.Data<>(resultSet.getString("revenue_date"), resultSet.getDouble("total_usd")));
-                revenueLBP.getData().add(new XYChart.Data<>(resultSet.getString("revenue_date"), resultSet.getDouble("total_lbp")));
+                revenueLBP.getData().add(new XYChart.Data<>(resultSet.getString("revenue_date"), (resultSet.getDouble("total_lbp") / 1_000_0)));
             }
             closeConnection();
             return  new XYChart.Series[] {revenueUSD, revenueLBP};
@@ -405,6 +453,236 @@ public class DBConnection {
         return topDishes;
     }
 
+    public String getGeneralReport(){
+        final String separator = "|";
+        final String newLine = "**";
+        final String instructions = "You Are Feast Planner's Personal AI assistant, you are an ai assistant in a restaurant management system. " +
+                                    "Your job is to answer any question that is given to you by the user in details. " +
+                                    "The following data is some information about the restaurant and they are written as the following: " +
+                                    "table name**attribute1|attribute2|attribute2... where ** represent a new line and | represent the column separator. " +
+                                    "Note that when you want to print a new line don't use **. This is the data:";
+        StringBuilder reportBuilder = new StringBuilder();
+
+        reportBuilder.append(instructions);
+        reportBuilder.append("Inventory Items Table").append(newLine).append("Item Name").append(separator)
+                .append("Available Quantity").append(separator).append("Price Per Unit").append(newLine);
+        for(InventoryItem item : getInventoryItems()){
+            reportBuilder.append(item.getName()).append(separator).append(item.getQuantity()).append(item.getUnit())
+                    .append(separator).append(item.getPrice()).append(newLine);
+        }
+
+        reportBuilder.append(newLine).append("Menu Dishes Table").append(newLine).append("Dish Name").append(separator)
+                .append("Dish Cost").append(separator).append("Dish Price").append(separator).append("Dish Status")
+                .append(separator).append("Dish Ingredients(xIngredient Quantity)").append(newLine);
+        for(Dish dish : getDishes()){
+            reportBuilder.append(dish.getName()).append(separator).append(dish.getCost()).append(separator)
+                    .append(dish.getPrice()).append(separator).append(dish.getStatus()).append(separator);
+            for(Ingredient ingredient : dish.getIngredients()){
+                reportBuilder.append(ingredient.getName()).append("(x").append(ingredient.getQuantity()).append(ingredient.getUnit()).append(")");
+                if(!(ingredient == dish.getIngredients().get(dish.getIngredients().size() - 1))){
+                    reportBuilder.append(",");
+                }
+            }
+            reportBuilder.append(newLine);
+        }
+
+        reportBuilder.append(newLine).append("Total Revenue Over Six Months Table").append(newLine).append("Month And Year")
+                .append(separator).append("Revenue In Dollars").append(separator).append("Revenue In Lebanese Pound")
+                .append(newLine);
+        XYChart.Series<String, Double>[] series = getRevenue();
+        for(int i = 0; i < series[0].getData().size(); i++){
+            reportBuilder.append(series[0].getData().get(i).getXValue()).append(separator)
+                    .append(series[0].getData().get(i).getYValue()).append("$").append(separator)
+                    .append(series[1].getData().get(i).getYValue()).append("LBP").append(newLine);
+        }
+
+        reportBuilder.append(newLine);
+
+        return reportBuilder.toString();
+    }
+
+    /**
+     * Retrieves all the customers with their information including all their delivery orders, their addresses,
+     * and their favorite dishes from the database
+     * @return A list of all the customers
+     */
+    public ArrayList<Customer> getCustomers(){
+        ArrayList<Customer> list = new ArrayList<>();
+        try{
+            openConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM customer;");
+            while (resultSet.next()){
+                list.add(new Customer(resultSet.getInt("customer_id"), resultSet.getString("customer_name"),
+                        resultSet.getString("customer_email"), resultSet.getString("customer_phone"),
+                        getCustomerOrders(resultSet.getInt("customer_id"), resultSet.getString("customer_name")),
+                        getCustomerAddresses(resultSet.getInt("customer_id")),
+                        getCustomerFavoriteDishes(resultSet.getInt("customer_id"))));
+            }
+            closeConnection();
+            return list;
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Retrieving Customers From Database");
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves All the addresses of a customer from the database
+     * @param customerID The id of the customer
+     * @return A list of addresses
+     */
+    private ArrayList<Address> getCustomerAddresses(int customerID){
+        ArrayList<Address> list  = new ArrayList<>();
+        try{
+            if(connection.isClosed()){
+                openConnection();
+            }
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customer_address WHERE customer_id = " + customerID);
+            while (rs.next()){
+                list.add(new Address(rs.getInt("address_id"), rs.getString("address_name"),
+                        rs.getString("saved_address")));
+            }
+            rs.close();
+            stmt.close();
+            return list;
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Retrieving Customer Addresses");
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves the address where a single delivery order was delivered from the database
+     * @param orderId The id of the order
+     * @return The delivery order's address
+     */
+    private Address getSingleOrderAddress(int orderId){
+        try{
+            if(connection.isClosed()){
+                openConnection();
+            }
+            Statement stmt = connection.createStatement();;
+            ResultSet rs = stmt.executeQuery("SELECT a.address_id, a.address_name, a.saved_address FROM " +
+                    "customer_address AS a, delivery_order AS o WHERE a.address_id = o.address_id " +
+                    "AND o.order_id = " + orderId);
+            if(rs.next()){
+                Address address = new Address(rs.getInt("address_id"), rs.getString("address_name"),
+                        rs.getString("saved_address"));
+                rs.close();
+                stmt.close();
+                return address;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Retrieving Order's Address From Database");
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves all the favorite dishes of a customer from the database
+     * @param customerID The id of the customer
+     * @return A list of the favorite dishes
+     */
+    private ArrayList<Dish> getCustomerFavoriteDishes(int customerID){
+        ArrayList<Dish> list = new ArrayList<>();
+        try{
+            if(connection.isClosed()){
+                openConnection();
+            }
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT d.dish_id, d.dish_name, d.dish_price FROM dish AS d, " +
+                    "customer_favorites AS f WHERE d.dish_id = f.dish_id AND f.customer_id = " + customerID);
+            while (rs.next()){
+                list.add(new Dish(rs.getString("dish_name"), rs.getDouble("dish_price"),
+                        rs.getInt("dish_id")));
+            }
+            rs.close();
+            stmt.close();
+            return list;
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Retrieving Customer's Favorite Dishes");
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves all the delivery orders information that a customer ordered from the database
+     * @param customerId The id of the customer that ordered the orders
+     * @return A list of the delivery orders
+     */
+    private ArrayList<DeliveryOrder> getCustomerOrders(int customerId, String customerName){
+        ArrayList<DeliveryOrder> list = new ArrayList<>();
+        try{
+            if(connection.isClosed()){
+                openConnection();
+            }
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT o.order_id, o.order_date, o.order_discount, o.order_total_usd, " +
+                    "o.order_total_lbp, o.order_paid_usd, o.order_paid_lbp, o.order_status, f.fee AS fee FROM restaurantdb.order AS o, " +
+                    "delivery_order AS d, delivery_fee AS f WHERE o.order_id = d.order_id AND d.delivery_fee = f.id AND d.customer_id = " + customerId);
+            while (rs.next()){
+                list.add(new DeliveryOrder(rs.getInt("order_id"), Properties.DELIVERY,
+                        rs.getInt("order_status"), rs.getTimestamp("order_date").toLocalDateTime(),
+                        rs.getDouble("order_discount"), rs.getDouble("order_total_usd"),
+                        rs.getDouble("order_total_lbp"), rs.getDouble("order_paid_usd"),
+                        rs.getDouble("order_paid_lbp"), getOrderItems(rs.getInt("order_id")),
+                        getSingleOrderAddress(rs.getInt("order_id")), customerName, rs.getDouble("fee")));
+            }
+            rs.close();
+            stmt.close();
+            return list;
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Retrieving Customer's Orders From Database");
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves the latest added delivery fee from the database
+     * @return The delivery fee
+     */
+    public double getDeliveryFee(){
+        double fee = 0;
+        try{
+            openConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM delivery_fee WHERE id = (SELECT MAX(id) FROM delivery_fee)");
+            if(resultSet.next()){
+                fee = resultSet.getDouble("fee");
+            }
+            closeConnection();
+            return fee;
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Retrieving Delivery Fee From Database");
+        }
+        return fee;
+    }
+
+    /**
+     * Insert new delivery fee into database
+     * @param fee The new fee to be added
+     */
+    public void insertDeliveryFee(double fee){
+        try{
+            openConnection();
+            preparedStatement = connection.prepareStatement("INSERT INTO delivery_fee (fee) VALUES (?)");
+            preparedStatement.setDouble(1, fee);
+            preparedStatement.execute();
+            closeConnection();
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Inserting Delivery Fee In Database");
+        }
+    }
+
     /**
      * Inserts a new Staff member to the database depending on the type of the employee
      * @param tableName The type of the employee
@@ -437,16 +715,17 @@ public class DBConnection {
      */
     private void insertWaiterOrManager(String tableName, Staff staff) throws SQLException {
         // Query for waiters and managers
-        preparedStatement = connection.prepareStatement("INSERT INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?);");
+        preparedStatement = connection.prepareStatement("INSERT INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?);");
         preparedStatement.setInt(1, staff.getId());
         preparedStatement.setString(2, staff.getName());
-        preparedStatement.setInt(3, staff.getAge());
+        preparedStatement.setDate(3, Date.valueOf(staff.getDob()));
         preparedStatement.setString(4, staff.getPhoneNumber());
         preparedStatement.setDouble(5, staff.getSalary().getUsd());
         preparedStatement.setDouble(6, staff.getSalary().getLbp());
         preparedStatement.setString(7, staff.getShift());
         preparedStatement.setDate(8, Date.valueOf(staff.getDateJoined()));
         preparedStatement.setString(9, staff.getSection());
+        preparedStatement.setInt(10, Properties.STAFF_DISABLED);
     }
     /**
      * Inserts a new cashier or kitchen member in the database
@@ -457,15 +736,16 @@ public class DBConnection {
      */
     private void insertOtherStaff(String tableName, Staff staff) throws SQLException{
         // Query for cashiers and kitchen staff
-        preparedStatement = connection.prepareStatement("INSERT INTO " + tableName + " VALUES(?,?,?,?,?,?,?,?);");
+        preparedStatement = connection.prepareStatement("INSERT INTO " + tableName + " VALUES(?,?,?,?,?,?,?,?,?);");
         preparedStatement.setInt(1, staff.getId());
         preparedStatement.setString(2, staff.getName());
-        preparedStatement.setInt(3, staff.getAge());
+        preparedStatement.setDate(3, Date.valueOf(staff.getDob()));
         preparedStatement.setString(4, staff.getPhoneNumber());
         preparedStatement.setDouble(5, staff.getSalary().getUsd());
         preparedStatement.setDouble(6, staff.getSalary().getLbp());
         preparedStatement.setString(7, staff.getShift());
         preparedStatement.setDate(8, Date.valueOf(staff.getDateJoined()));
+        preparedStatement.setInt(9, Properties.STAFF_DISABLED);
     }
 
     /**
@@ -601,8 +881,8 @@ public class DBConnection {
             preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + name + "_id = ? ;");
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
-            closeConnection();
             preparedStatement.close();
+            closeConnection();
         }catch (SQLException e){
             e.printStackTrace();
             showAlert("Error Deleting " + name + " From Database");
@@ -700,10 +980,10 @@ public class DBConnection {
      */
     private void editWithSection(String tableName, Staff staff) throws SQLException{
         preparedStatement = connection.prepareStatement("UPDATE " + tableName + " SET " + tableName + "_name = ?, " +
-                tableName + "_age = ?, " + tableName + "_phone = ?, " + tableName + "_salary_usd = ?, " + tableName + "_salary_lbp = ?, " +
+                tableName + "_dob = ?, " + tableName + "_phone = ?, " + tableName + "_salary_usd = ?, " + tableName + "_salary_lbp = ?, " +
                 tableName + "_shift = ?, " + tableName + "_date_joined = ?, " + tableName + "_section = ? WHERE " + tableName + "_id = ?");
         preparedStatement.setString(1, staff.getName());
-        preparedStatement.setInt(2, staff.getAge());
+        preparedStatement.setDate(2, Date.valueOf(staff.getDob()));
         preparedStatement.setString(3, staff.getPhoneNumber());
         preparedStatement.setDouble(4, staff.getSalary().getUsd());
         preparedStatement.setDouble(5, staff.getSalary().getLbp());
@@ -719,12 +999,12 @@ public class DBConnection {
      * @throws SQLException If there was an error in the staff's info or in the type or in the database connection
      */
     private void editWithoutSection(String tableName, Staff staff) throws SQLException{
-        preparedStatement = connection.prepareStatement("UPDATE " + tableName + "SET " + tableName + "_name = ?, "
-                + tableName + "_age = ?, " + tableName + "_phone = ?, " + tableName + "_salary_usd = ?, " +
+        preparedStatement = connection.prepareStatement("UPDATE " + tableName + " SET " + tableName + "_name = ?, "
+                + tableName + "_dob = ?, " + tableName + "_phone = ?, " + tableName + "_salary_usd = ?, " +
                 tableName + "_salary_lbp = ?, " + tableName + "_shift = ?, " + tableName +
                 "_date_joined = ? WHERE " + tableName + "_id = ?");
         preparedStatement.setString(1, staff.getName());
-        preparedStatement.setInt(2, staff.getAge());
+        preparedStatement.setDate(2, Date.valueOf(staff.getDob()));
         preparedStatement.setString(3, staff.getPhoneNumber());
         preparedStatement.setDouble(4, staff.getSalary().getUsd());
         preparedStatement.setDouble(5, staff.getSalary().getLbp());
@@ -798,6 +1078,37 @@ public class DBConnection {
         }catch (SQLException e){
             e.printStackTrace();
             showAlert("Error Updating Dish In Database");
+        }
+    }
+
+    /**
+     * Changes the status of a staff member in the database
+     * @param staffID The id of the staff whose status needs to be changed
+     * @param status The new status to be updated
+     */
+    public void editStaffStatus(int staffID, int status){
+        try{
+            String tableName;
+            if(staffID < 2000){
+                tableName = "manager";
+            }else if(staffID >= 2000 && staffID < 3000){
+                tableName = "waiter";
+            }else if(staffID >= 3000 && staffID < 4000){
+                tableName = "cashier";
+            }else{
+                tableName = "kitchen";
+            }
+
+            openConnection();
+            preparedStatement = connection.prepareStatement("UPDATE " + tableName + " SET " + tableName + "_status = ? WHERE " + tableName + "_id = ?");
+            preparedStatement.setInt(1, status);
+            preparedStatement.setInt(2, staffID);
+            preparedStatement.execute();
+            preparedStatement.close();
+            closeConnection();
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Updating Staff Status In Database");
         }
     }
 

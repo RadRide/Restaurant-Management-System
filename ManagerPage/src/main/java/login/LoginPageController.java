@@ -2,6 +2,10 @@ package login;
 
 import dbConnection.DBConnection;
 import encryption.Hasher;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXPasswordField;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,27 +27,21 @@ import java.util.prefs.*;
 public class LoginPageController implements Initializable {
 
     @FXML
-    private TextField usernameField, showPasswordField;
+    private MFXTextField usernameField;
     @FXML
-    private PasswordField passwordField;
+    private MFXPasswordField passwordField;
     @FXML
-    private CheckBox showPasswordCheckBox, rememberMeCheckBox;
+    private MFXCheckbox rememberMeCheckBox;
     @FXML
     private Label messageLabel;
     @FXML
-    private Button loginButton;
-    @FXML
-    private FontIcon loginIcon;
+    private MFXButton loginButton;
     private DBConnection connection;
     private Stage stage;
     private Parent root;
     private Scene scene;
     private FXMLLoader loader;
     private Preferences preferences;
-
-    private final Color lightGreen = Color.web("#5cd2c6"),
-            white = Color.web("#fefefe"),
-            darkBlue = Color.web("#363753");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,31 +53,7 @@ public class LoginPageController implements Initializable {
         preferences.put("Password", "");
         preferences.put("Name", "");
 
-        changeOnHover(loginButton, loginIcon);
-
-        showPasswordCheckBox.setOnAction(this::showPassword);
         loginButton.setOnAction(this::login);
-    }
-
-    public void showPassword(ActionEvent event){
-        // Replaces the passwordField with a TextField if the show password is selected and vice versa.
-        if(showPasswordCheckBox.isSelected()){
-            String password = passwordField.getText();
-            passwordField.setVisible(false);
-            passwordField.setDisable(true);
-            showPasswordField.setText(password);
-            showPasswordField.setDisable(false);
-            showPasswordField.setVisible(true);
-            passwordField.clear();
-        }else{
-            String password = showPasswordField.getText();
-            showPasswordField.setVisible(false);
-            showPasswordField.setDisable(true);
-            passwordField.setText(password);
-            passwordField.setDisable(false);
-            passwordField.setVisible(true);
-            showPasswordField.clear();
-        }
     }
 
     public void login(ActionEvent event){
@@ -87,18 +61,12 @@ public class LoginPageController implements Initializable {
         if(usernameField.getText().isEmpty()){
             emptyUsername();
         }
-        if(passwordField.getText().isEmpty() && showPasswordField.getText().isEmpty()){
+        if(passwordField.getText().isEmpty()){
             emptyPassword();
         }
         else{
-            // Checks to see which password field if used and gets the password from it
-            String password = "";
-            if(showPasswordCheckBox.isSelected()){
-                password = showPasswordField.getText();
-            }else{
-                password = passwordField.getText();
-            }
-            password = Hasher.hash(password);
+            String password;
+            password = Hasher.hash(passwordField.getText());
             // Checks the credentials in the database
             if(connection.checkOwner(usernameField.getText(), password)){
                 if(rememberMeCheckBox.isSelected()){
@@ -144,29 +112,11 @@ public class LoginPageController implements Initializable {
         messageLabel.setText("All Fields Must Be Filled");
         passwordField.setStyle("-fx-border-color: red;" +
                 "-fx-text-fill: red;");
-        showPasswordField.setStyle("-fx-border-color: red;" +
-                "-fx-text-fill: red;");
     }
     public void wrongCredentials(){
         emptyPassword();
         emptyUsername();
         messageLabel.setText("Wrong Username Or Password");
-    }
-
-    private void changeOnHover(Button button, FontIcon icon) {
-        button.setStyle("-fx-border-color: #363753;" +
-                "-fx-text-fill: #363753;");
-        icon.setIconColor(darkBlue);
-        button.setOnMouseEntered(event -> {
-            button.setStyle("-fx-border-color: #5cd2c6;" +
-                    "-fx-text-fill: #5cd2c6;");
-            icon.setIconColor(lightGreen);
-        });
-        button.setOnMouseExited(event -> {
-            button.setStyle("-fx-border-color: #363753;" +
-                    "-fx-text-fill: #363753;");
-            icon.setIconColor(darkBlue);
-        });
     }
 
 }

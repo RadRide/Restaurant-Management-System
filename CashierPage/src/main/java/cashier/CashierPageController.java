@@ -23,10 +23,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import login.LoginPageController;
-import order.Order;
-import order.OrderCard;
-import order.OrderItem;
-import order.Tip;
+import order.*;
 import properties.Properties;
 
 import java.io.IOException;
@@ -216,16 +213,16 @@ public class CashierPageController implements Initializable {
             oldOrderDiscountLabel.setText("% " + selectedOrder.getDiscount());
             oldOrderTableLabel.setText(String.valueOf(selectedOrder.getTable()));
             oldOrderSectionLabel.setText(selectedOrder.getSection());
-            oldCustomerNameLabel.setText(selectedOrder.getCustomer() != null ? selectedOrder.getCustomer().getName() : "");
-            oldOrderAddressLabel.setText(selectedOrder.getAddress() != null ? selectedOrder.getAddress() : "");
-            oldOrderTotalLabel.setText("$ " + selectedOrder.getTotalUSD() + " / LBP " + selectedOrder.getTotalLBP());
+            oldCustomerNameLabel.setText(selectedOrder instanceof DeliveryOrder ? ((DeliveryOrder)selectedOrder).getCustomer().getName() : "");
+            oldOrderAddressLabel.setText(selectedOrder instanceof DeliveryOrder ? ((DeliveryOrder)selectedOrder).getAddress().getAddress() : "");
+            oldOrderTotalLabel.setText("$ " + selectedOrder.getTotalUSD() + " / LBP " + selectedOrder.getTotalLBP());   
         }else{
             orderIdLabel.setText(String.valueOf(selectedOrder.getId()));
             orderDiscountLabel.setText("% " + selectedOrder.getDiscount());
             orderTableLabel.setText(String.valueOf(selectedOrder.getTable()));
             orderSectionLabel.setText(selectedOrder.getSection());
-            customerNameLabel.setText(selectedOrder.getCustomer() != null ? selectedOrder.getCustomer().getName() : "");
-            orderAddressLabel.setText(selectedOrder.getAddress() != null ? selectedOrder.getAddress() : "");
+            customerNameLabel.setText(selectedOrder instanceof DeliveryOrder ? ((DeliveryOrder)selectedOrder).getCustomer().getName() : "");
+            orderAddressLabel.setText(selectedOrder instanceof DeliveryOrder ? ((DeliveryOrder)selectedOrder).getAddress().getAddress() : "");
             orderTotalLabel.setText("$ " + selectedOrder.getTotalUSD() + " / LBP " + selectedOrder.getTotalLBP());
         }
     }
@@ -241,7 +238,6 @@ public class CashierPageController implements Initializable {
     }
 
     public void initInvoiceArea(TextArea area){
-        // TODO: add an if to check if the order is a delivery and adds the delivery fee to the invoice.
         int spacing = 32;
         area.setText("\tFEAST PLANNER");
         area.appendText("\n\n Order: " + selectedOrder.getId());
@@ -249,7 +245,7 @@ public class CashierPageController implements Initializable {
         if(selectedOrder.getTable() != Properties.DELIVERY){
             area.appendText("\n Table: " + selectedOrder.getTable());
         }else{
-            area.appendText("\n Location: " + abbreviate(selectedOrder.getAddress(), 22));
+            area.appendText("\n Location: " + ((DeliveryOrder)selectedOrder).getAddress().getAddress());
         }
 
         area.appendText("\n\n ORDER ITEMS\t\t    PRICE");
@@ -268,6 +264,12 @@ public class CashierPageController implements Initializable {
         area.appendText("----------------------------------\n");
 
         String spaces = " ";
+
+        if(selectedOrder.getTable() == Properties.DELIVERY){
+            String deliveryFee = "$" + invoiceFormatter.format(((DeliveryOrder)selectedOrder).getDeliveryFee());
+            area.appendText(" Delivery Fee:" + spaces.repeat(spacing - (13 + deliveryFee.length())) + deliveryFee + "\n");
+        }
+
         if(selectedOrder.getDiscount() != 0){
             String discount = "%" + (int)(selectedOrder.getDiscount() * 100);
             area.appendText(" Discount:" + spaces.repeat(spacing - (9 + discount.length())) + discount + "\n\n");
@@ -421,7 +423,7 @@ public class CashierPageController implements Initializable {
         double paidUSD = paidUsdField.getText().isEmpty() ? 0 : Double.parseDouble(paidUsdField.getText());
         int paidLBP = paidLbpField.getText().isEmpty() ? 0 : Integer.parseInt(paidLbpField.getText());
 
-        if(paidLBP * rate + paidUSD == selectedOrder.getTotalUSD() &&  paidLBP >= 0 && paidUSD >= 0){
+        if((double)paidLBP / (double)rate + paidUSD == selectedOrder.getTotalUSD() &&  paidLBP >= 0 && paidUSD >= 0){
             double tipUSD = tipUsdField.getText().isEmpty() ? 0 : Double.parseDouble(tipUsdField.getText());
             int tipLBP = tipLbpField.getText().isEmpty() ? 0 : Integer.parseInt(tipLbpField.getText());
 
@@ -503,6 +505,27 @@ public class CashierPageController implements Initializable {
             return str.substring(0, maxLength - 3) + "...";
         }
         return str;
+    }
+
+    public String indent(String message){
+        final int space = 21;
+        String text = message;
+        if(text.length() > space){
+            StringBuilder deconstructed = new StringBuilder();
+            int index = 0;
+            while (!text.equals("")){
+                if(index + space >= text.length()){
+                    deconstructed.append(text.substring(0, text.length())).append(".");
+                    break;
+                }else{
+                    deconstructed.append(text.substring(0, index + space)).append("\n").append(" ".repeat(10));
+                }
+                text = text.substring(index + space, text.length());
+                index += space;
+            }
+            return deconstructed.toString();
+        }
+        return text;
     }
 
     public void setCashierName(String name){

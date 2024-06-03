@@ -10,18 +10,20 @@ import java.util.ArrayList;
 
 public class Order {
 
-    private int id, orderTable;
+    private int id, orderTable, status;
     private String orderSource, orderDiscount, orderTotal, orderPaid, orderStatus, orderDateString;
     private double orderTotalUSD, orderTotalLBP, orderPaidUSD, orderPaidLBP, discount;
     private LocalDateTime orderDate;
     private ArrayList<OrderItem> orderItems;
     private DecimalFormat formatter;
 
-    public Order(int id, int orderSource, LocalDateTime orderDate, double orderDiscount, double orderTotalUSD,
+    public Order(int id, int orderSource, int status, LocalDateTime orderDate, double orderDiscount, double orderTotalUSD,
                  double orderTotalLBP, double orderPaidUSD, double orderPaidLBP, ArrayList<OrderItem> orderItems) {
         formatter = new DecimalFormat(Properties.PATTERN);
         this.id = id;
         this.orderTable = orderSource;
+        this.status = status;
+        setOrderStatus(status);
         setOrderSource(orderSource);
         this.orderDate = orderDate;
         setOrderDateString(orderDate);
@@ -109,11 +111,31 @@ public class Order {
         this.orderItems = orderItems;
     }
 
+    /**
+     * @return A string representation of the order's status
+     */
     public String getOrderStatus() {
         return orderStatus;
     }
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
+    }
+    public void setOrderStatus(int status){
+        switch (status){
+            case 0: orderStatus = "In Kitchen"; break;
+            case 1: orderStatus = "Completed"; break;
+            case 2: orderStatus = "Checked Out"; break;
+        }
+    }
+
+    /**
+     * @return The status as an integer(0 for <b><i>IN KITCHEN</i></b>, 1 for <b><i>COMPLETED</i></b>, 2 for <b><i>CHECKED OUT</i></b>)
+     */
+    public int getStatus(){
+        return status;
+    }
+    public void setStatus(int status){
+        this.status = status;
     }
 
     public String getOrderDateString() {

@@ -63,10 +63,10 @@ public class OrderCard extends TitledPane {
     }
 
     public void initDelivery(){
-        sectionLabel = new Label("Customer: " + order.getCustomer().getName());
+        sectionLabel = new Label("Customer: " + ((DeliveryOrder)order).getCustomer().getName());
         sectionLabel.getStyleClass().add("orderDetailLabel");
 
-        tableLabel = new Label("Location: " + order.getAddress());
+        tableLabel = new Label("Location: " + ((DeliveryOrder)order).getAddress().getAddress());
         tableLabel.getStyleClass().add("orderDetailLabel");
 
         amountLabel = new Label("Amount: $" + order.getTotalUSD());

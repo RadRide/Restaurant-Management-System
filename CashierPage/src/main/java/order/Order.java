@@ -8,8 +8,7 @@ public class Order {
 
     private int id, status, table;
     private double totalUSD, totalLBP, paidUSD, paidLBP, discount;
-    private String date, section, address;
-    private Customer customer;
+    private String date, section;
     private ArrayList<OrderItem> items;
     private Tip tip;
 
@@ -26,23 +25,6 @@ public class Order {
         this.items = items;
         this.tip = tip;
         setTable(table, section);
-    }
-
-    public Order(int id, int status, int table, double totalUSD, double totalLBP, double paidUSD, double paidLBP,
-                 double discount, String date, String address, Customer customer, ArrayList<OrderItem> items, Tip tip){
-        this.id = id;
-        this.discount = discount;
-        this.status = status;
-        this.totalLBP = totalLBP;
-        this.totalUSD = totalUSD;
-        this.paidLBP = paidLBP;
-        this.paidUSD = paidUSD;
-        this.date = date;
-        this.address = address;
-        this.customer = customer;
-        this.items = items;
-        this.tip = tip;
-        setTable(table, null);
     }
 
     public Order(){
@@ -130,20 +112,6 @@ public class Order {
     }
     public void setSection(String section) {
         this.section = section;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public ArrayList<OrderItem> getItems() {

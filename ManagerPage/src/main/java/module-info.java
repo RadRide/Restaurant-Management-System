@@ -15,6 +15,8 @@ module main.restaurantpos {
     requires MaterialFX;
     requires org.apache.poi.poi;
     requires org.apache.poi.ooxml;
+    requires com.google.gson;
+    requires java.net.http;
 
     opens main to javafx.fxml;
     exports main;
@@ -31,7 +33,10 @@ module main.restaurantpos {
     exports section;
     exports settings;
     exports order;
+    exports customer;
     exports statistics;
     exports staff;
     opens staff to javafx.fxml;
+    exports ai;
+    opens ai to javafx.fxml;
 }

@@ -128,16 +128,19 @@ public class DBConnection {
         ArrayList<OrderCard> list = new ArrayList<>();
         statement = connection.createStatement();;
         resultSet = statement.executeQuery("SELECT o.order_id, o.order_date, o.order_status, o.order_table, o.order_total_usd, o.order_total_lbp, " +
-                "o.order_paid_usd, o.order_paid_lbp, o.order_discount, o.order_date, o.order_table, d.address, c.customer_name, c.customer_id " +
-                "FROM restaurantdb.order AS o, restaurantdb.delivery_order AS d, restaurantdb.customer AS c WHERE o.order_status != " + Properties.CHECKED_OUT + " " +
-                "AND o.order_table = " + Properties.DELIVERY + " AND o.order_id = d.order_id AND c.customer_id = d.customer_id");
+                "o.order_paid_usd, o.order_paid_lbp, o.order_discount, o.order_date, o.order_table, c.customer_name, c.customer_id, d.address_id, d.delivery_fee " +
+                "FROM restaurantdb.order AS o, restaurantdb.delivery_order AS d, restaurantdb.customer AS c WHERE o.order_status != " + Properties.CHECKED_OUT +
+                " AND o.order_table = " + Properties.DELIVERY + " AND o.order_id = d.order_id AND c.customer_id = d.customer_id");
         while (resultSet.next()){
-            list.add(new OrderCard(new Order(resultSet.getInt("order_id"), resultSet.getInt("order_status"),
-                    resultSet.getInt("order_table"), resultSet.getDouble("order_total_usd"), resultSet.getDouble("order_total_lbp"),
-                    resultSet.getDouble("order_paid_usd"), resultSet.getDouble("order_paid_lbp"), resultSet.getDouble("order_discount"),
-                    resultSet.getTimestamp("order_date").toLocalDateTime().toString(), resultSet.getString("address"),
+            list.add(new OrderCard(new DeliveryOrder(resultSet.getInt("order_id"), resultSet.getInt("order_status"),
+                    resultSet.getInt("order_table"), resultSet.getDouble("order_total_usd"),
+                    resultSet.getDouble("order_total_lbp"), resultSet.getDouble("order_paid_usd"),
+                    resultSet.getDouble("order_paid_lbp"), resultSet.getDouble("order_discount"),
+                    resultSet.getTimestamp("order_date").toLocalDateTime().toString(),
+                    getOrderItems(resultSet.getInt("order_id")), getOrderTip(resultSet.getInt("order_id")),
                     new Customer(resultSet.getInt("customer_id"), resultSet.getString("customer_name")),
-                    getOrderItems(resultSet.getInt("order_id")), getOrderTip(resultSet.getInt("order_id"))), controller, false));
+                    getOrderAddress(resultSet.getInt("customer_id"), resultSet.getInt("address_id")),
+                    getDeliveryFee(resultSet.getInt("delivery_fee"))), controller, false));
         }
         statement.close();
         return list;
@@ -152,17 +155,20 @@ public class DBConnection {
         ArrayList<OrderCard> list = new ArrayList<>();
         statement = connection.createStatement();;
         resultSet = statement.executeQuery("SELECT o.order_id, o.order_date, o.order_status, o.order_table, o.order_total_usd, o.order_total_lbp, " +
-                "o.order_paid_usd, o.order_paid_lbp, o.order_discount, o.order_date, o.order_table, d.address, c.customer_name, c.customer_id " +
+                "o.order_paid_usd, o.order_paid_lbp, o.order_discount, o.order_date, o.order_table, c.customer_name, c.customer_id, d.address_id, d.delivery_fee " +
                 "FROM restaurantdb.order AS o, restaurantdb.delivery_order AS d, restaurantdb.customer AS c WHERE o.order_status = " + Properties.CHECKED_OUT + " " +
                 "AND o.order_table = " + Properties.DELIVERY + " AND o.order_id = d.order_id AND c.customer_id = d.customer_id " +
                 "AND o.order_date > DATE_SUB(NOW(), INTERVAL 1 MONTH)");
         while (resultSet.next()){
-            list.add(new OrderCard(new Order(resultSet.getInt("order_id"), resultSet.getInt("order_status"),
-                    resultSet.getInt("order_table"), resultSet.getDouble("order_total_usd"), resultSet.getDouble("order_total_lbp"),
-                    resultSet.getDouble("order_paid_usd"), resultSet.getDouble("order_paid_lbp"), resultSet.getDouble("order_discount"),
-                    resultSet.getTimestamp("order_date").toLocalDateTime().toString(), resultSet.getString("address"),
+            list.add(new OrderCard(new DeliveryOrder(resultSet.getInt("order_id"), resultSet.getInt("order_status"),
+                    resultSet.getInt("order_table"), resultSet.getDouble("order_total_usd"),
+                    resultSet.getDouble("order_total_lbp"), resultSet.getDouble("order_paid_usd"),
+                    resultSet.getDouble("order_paid_lbp"), resultSet.getDouble("order_discount"),
+                    resultSet.getTimestamp("order_date").toLocalDateTime().toString(),
+                    getOrderItems(resultSet.getInt("order_id")), getOrderTip(resultSet.getInt("order_id")),
                     new Customer(resultSet.getInt("customer_id"), resultSet.getString("customer_name")),
-                    getOrderItems(resultSet.getInt("order_id")), getOrderTip(resultSet.getInt("order_id"))), controller, true));
+                    getOrderAddress(resultSet.getInt("customer_id"), resultSet.getInt("address_id")),
+                    getDeliveryFee(resultSet.getInt("delivery_fee"))), controller, true));
         }
         statement.close();
         return list;
@@ -208,22 +214,23 @@ public class DBConnection {
                     " AND o.order_id = " + order.getId();
             if(order.getTable() == Properties.DELIVERY){
                 query = "SELECT o.order_id, o.order_date, o.order_status, o.order_table, o.order_total_usd, o.order_total_lbp, " +
-                        "o.order_paid_usd, o.order_paid_lbp, o.order_discount, o.order_date, o.order_table, d.address, c.customer_name, c.customer_id " +
-                        "FROM restaurantdb.order AS o, restaurantdb.delivery_order AS d, restaurantdb.customer AS c WHERE o.order_table = " + Properties.DELIVERY + " " +
+                        "o.order_paid_usd, o.order_paid_lbp, o.order_discount, o.order_date, o.order_table, a.saved_address, c.customer_name, c.customer_id, d.address_id, d.delivery_fee " +
+                        "FROM restaurantdb.order AS o, restaurantdb.delivery_order AS d, restaurantdb.customer AS c, restaurantdb.customer_address AS a WHERE o.order_table = " + Properties.DELIVERY + " " +
                         "AND o.order_id = d.order_id AND c.customer_id = d.customer_id AND o.order_id = " +  order.getId();
             }
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             if(resultSet.next()){
                 if(order.getTable() == Properties.DELIVERY){
-                    return new Order(resultSet.getInt("order_id"), resultSet.getInt("order_status"),
+                    return new DeliveryOrder(resultSet.getInt("order_id"), resultSet.getInt("order_status"),
                             resultSet.getInt("order_table"), resultSet.getDouble("order_total_usd"),
-                            resultSet.getDouble("order_total_lbp"),
-                            resultSet.getDouble("order_paid_usd"), resultSet.getDouble("order_paid_lbp"),
-                            resultSet.getDouble("order_discount"),
-                            resultSet.getTimestamp("order_date").toLocalDateTime().toString(), resultSet.getString("address"),
+                            resultSet.getDouble("order_total_lbp"), resultSet.getDouble("order_paid_usd"),
+                            resultSet.getDouble("order_paid_lbp"), resultSet.getDouble("order_discount"),
+                            resultSet.getTimestamp("order_date").toLocalDateTime().toString(),
+                            getOrderItems(resultSet.getInt("order_id")), getOrderTip(resultSet.getInt("order_id")),
                             new Customer(resultSet.getInt("customer_id"), resultSet.getString("customer_name")),
-                            getOrderItems(resultSet.getInt("order_id")), getOrderTip(resultSet.getInt("order_id")));
+                            getOrderAddress(resultSet.getInt("customer_id"), resultSet.getInt("address_id")),
+                            getDeliveryFee(resultSet.getInt("delivery_fee")));
                 }else{
                     return new Order(resultSet.getInt("order_id"), resultSet.getInt("order_status"),
                             resultSet.getInt("order_table"), resultSet.getDouble("order_total_usd"),
@@ -260,6 +267,59 @@ public class DBConnection {
         }
         stmt.close();
         return new Tip();
+    }
+
+    /**
+     * Retrieves the address's information of a specific delivery order from the database
+     * @param addressID The id of the address
+     * @param customerID The customer id who ordered the delivery order
+     * @return The address of the delivery address
+     */
+    private Address getOrderAddress(int addressID, int  customerID){
+        Address address = new Address(addressID, "Not Found", "N/A");
+        try{
+            if(connection.isClosed()){
+                openConnection();
+            }
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customer_address WHERE address_id = " + addressID);
+            if(rs.next()){
+                address = new Address(addressID, rs.getString("address_name"), rs.getString("saved_address"));
+            }
+            rs.close();
+            stmt.close();
+            return address;
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Retrieving Order's Address From Database");
+        }
+        return address;
+    }
+
+    /**
+     * Retrieves the delivery of the delivery order
+     * @param id The id of the delivery fee
+     * @return The delivery fee as a double
+     */
+    private double getDeliveryFee(int id){
+        try {
+            double fee = 0;
+            if(connection.isClosed()){
+                openConnection();
+            }
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM delivery_fee WHERE id = " + id);
+            if(rs.next()){
+                fee = rs.getDouble("fee");
+            }
+            rs.close();
+            stmt.close();
+            return fee;
+        }catch (SQLException e){
+            e.printStackTrace();
+            showAlert("Error Retrieving the Order's Delivery Fee From The Database");
+        }
+        return 0;
     }
 
     /**

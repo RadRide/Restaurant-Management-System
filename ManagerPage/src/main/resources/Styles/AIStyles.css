@@ -1,0 +1,82 @@
+@import "Properties.css";
+
+.background{
+    -fx-background-color: -fx-grey;
+}
+
+.scrollPane{
+    -fx-background-color: -fx-grey;
+
+    -track-color: transparent;
+    -thumb-color: -fx-lightBlue;
+    -thumb-hover-color: -fx-blue;
+}
+
+.inputBox{
+    -fx-background-color: -fx-blueGrey;
+}
+
+.textField{
+    -fx-background-color: transparent;
+
+    -fx-border-color: -fx-white;
+
+    -fx-text-fill: -fx-white;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+
+    -mfx-float-mode: BORDER;
+}
+.textField .floating-text{
+    -fx-text-fill: -fx-white;
+    -fx-background-color: -fx-blueGrey;
+}
+.textField:focus-within .floating-text{
+    -fx-background-color: -fx-blueGrey;
+}
+
+.btn{
+    -fx-background-color: -fx-white;
+
+    -fx-text-fill: -fx-blueGrey;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+}
+.btn .ikonli-font-icon{
+    -fx-icon-color: -fx-blueGrey;
+}
+.btn .mfx-ripple-generator{
+    -mfx-ripple-color: -fx-blueGrey;
+}
+
+.progressBar .track{
+    -fx-fill: -fx-white;
+}
+.progressBar .bar1,
+.progressBar .bar2{
+    -fx-fill: linear-gradient(to bottom, #5cd2c6, #5cd2c6);
+}
+
+.answerBox{
+    -fx-alignment: center-left;
+    -fx-padding: 10 20 10 10;
+
+    -fx-pref-height: -1; /*-1 Means That the height is dynamically computed*/
+}
+
+.requestBox{
+    -fx-background-color: -fx-lightGrey;
+    -fx-background-radius: 20;
+
+    -fx-alignment: center-right;
+    -fx-padding: 10 10 10 40;
+
+    -fx-pref-height: -1;
+}
+
+.label{
+    -fx-text-fill: -fx-white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+    -fx-wrap-text: true;
+}

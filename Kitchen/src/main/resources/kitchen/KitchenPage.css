@@ -1,0 +1,212 @@
+
+
+.orderPaneHbox{
+    -fx-border-radius: 20px;
+    -fx-border-width: 3px;
+    -fx-border-color:linear-gradient(to right, #dd2b2b, #e06e2b, #df9e29, #d9ca23);
+
+}
+.orderPaneLabel{
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+
+
+
+
+}
+
+
+
+.orderPaneButton{
+    -fx-font-weight: bold ;
+    -fx-border-color:transparent;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to right, #dd2b2b, #e06e2b, #df9e29, #d9ca23);
+    -fx-background-radius:20;
+    -fx-word-text: true;
+}
+.orderPaneButton:hover{
+    -fx-font-weight: bold ;
+    -fx-border-color:transparent;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-background-color: #e06e2b;
+    -fx-background-radius:20;
+}
+.orderPaneButton:pressed{
+    -fx-font-weight: bold ;
+    -fx-border-color:transparent;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-background-color: #d9ac23;
+    -fx-background-radius:20;
+}
+
+.orderPaneVbox{
+    -fx-border-color: transparent;
+
+    //hy btozbat
+    //-fx-padding: 20;
+
+}
+
+.orderPaneTextArea{
+    -fx-background-color: transparent;
+    -fx-border-color: linear-gradient(to right, #dd2b2b, #e06e2b, #df9e29, #d9ca23);
+    -fx-border-width: 2px;
+    -fx-border-radius: 20px;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+
+.orderPaneCheckListView{
+    -fx-border-color: linear-gradient(to right, #dd2b2b, #e06e2b, #df9e29, #d9ca23);
+    -fx-border-width: 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 16px;
+}
+.orderPaneCheckListView .list-cell:filled:hover {
+    /*-fx-background-color: linear-gradient(to right, #dd2b2b, #e06e2b, #df9e29, #d9ca23);*/
+    -fx-background-color: #e06e2b;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+}
+.orderPaneCheckListView .list-cell:filled:selected {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-border-width: 2px;
+    -fx-border-color: #e06e2b;
+    -fx-border-radius: 20px;
+}
+.orderPaneCheckListView .list-cell{
+    -fx-background-color: white;
+}
+.orderPaneCheckListView .scroll-bar:vertical .thumb{
+     -fx-background-color: #e06e2b;
+    -fx-background-radius: 10px;
+ }
+.orderPaneCheckListView .scroll-bar:vertical {
+    -fx-background-color: white;
+}
+.orderPaneCheckListView .check-box .box{
+    -fx-background-color: white;
+    -fx-border-color: #e06e2b;
+    -fx-border-radius: 3px;
+}
+.orderPaneCheckListView .check-box:selected .box{
+    -fx-background-color: #e06e2b;
+}
+.orderPaneCheckListView .check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+.hboxTop{
+    //-fx-background-color: linear-gradient(to right, #4A3528, #FDBA3E);
+    -fx-background-color: linear-gradient(to right, #dd2b2b, #e06e2b, #df9e29, #d9ca23);
+}
+
+.vboxMain{
+    -fx-background-color: white;
+}
+
+
+.tabBtn{
+    -fx-background-color: transparent;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+
+}
+.tabBtn:hover{
+    -fx-background-color: #e06e2b;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.hboxMain{
+    -fx-border-width:2px;
+    -fx-border-color:#4A3528;
+    -fx-border-radius:20;
+
+}
+
+
+
+
+
+
+
+.background_color_top{
+    //-fx-background-color:blue;
+    -fx-background-color: linear-gradient(to right, #4A3528, #FDBA3E);
+    -fx-border-color:black;
+    -fx-border-width: 3px ;
+    -fx-border-color: white;
+}
+.background_color{
+    //-fx-background-color:#FDBA3E;
+    -fx-background-color: linear-gradient(to right, #4A3528, #FDBA3E);
+}
+
+.listView {
+    -fx-border-radius:10%;
+
+}
+
+.listView {
+    -fx-padding:20px;
+    -fx-border-radius:10%;
+}
+.listView .list-cell:filled:hover {
+    -fx-background-color: #FDBA3E;
+    -fx-text-fill: black;
+
+}
+.listView .list-cell{
+
+    //-fx-border-radius: 10%;
+}
+
+.listView .list-cell{
+    -fx-background-color: white;
+    -fx-text-fill: brown;
+    -fx-border-color: #4A3528;
+}
+
+
+.listViewBtn{
+    -fx-color:#FDBA3E;
+    //-fx-font-size:20;
+    //-fx-min-width:50;
+}
+
+.orderId{
+    -fx-padding: 20px;
+}
+
+.completeOrderBtn{
+    /*-fx-border-top-left-radius: 10%;*/
+    -fx-background-color:turquoise;
+    -fx-background-radius: 20px;
+    -fx-text-fill:white;
+    -fx-font-size:20;
+}
+
+
+

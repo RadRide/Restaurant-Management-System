@@ -66,7 +66,7 @@
             </HBox>
             <HBox layoutX="20.0" layoutY="64.0" prefHeight="25.0" prefWidth="450.0">
                <children>
-                  <Label fx:id="locationLabel" prefHeight="25.0" styleClass="dialogLabel" text="Location:">
+                  <Label fx:id="locationLabel" minWidth="-Infinity" prefHeight="25.0" prefWidth="70.0" styleClass="dialogLabel" text="Location:">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -74,7 +74,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="locationValueLabel" styleClass="dialogLabel" text="xxxx">
+                  <Label fx:id="locationValueLabel" styleClass="dialogLabel" text="xxxx" wrapText="true">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

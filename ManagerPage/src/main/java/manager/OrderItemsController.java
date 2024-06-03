@@ -7,6 +7,7 @@ import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import order.DeliveryOrder;
 import order.Order;
 import order.OrderItem;
 import properties.Properties;
@@ -38,9 +39,10 @@ public class OrderItemsController {
         itemsListView.getItems().addAll(order.getOrderItems());
 
         if(order.getOrderTable() == Properties.DELIVERY){
+            DeliveryOrder deliveryOrder = (DeliveryOrder) order;
             tableLabel.setText("Customer Name:");
-            tableNumberLabel.setText("Assaf Mrad");
-            locationValueLabel.setText("Sin El Fil");
+            tableNumberLabel.setText(deliveryOrder.getCustomerName());
+            locationValueLabel.setText(deliveryOrder.getAddress().getAddress());
         }else{
             locationLabel.setVisible(false);
             locationValueLabel.setVisible(false);

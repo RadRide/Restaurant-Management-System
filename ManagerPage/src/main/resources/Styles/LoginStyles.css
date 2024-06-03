@@ -1,43 +1,77 @@
+@import "Properties.css";
+
 .leftPane{
-    -fx-background-color: #fefefe;
+    -fx-background-color: -fx-white;
 }
 
 .rightPane{
-    -fx-background-color: linear-gradient(to bottom, #5cd2c6, #5AE881);
+    -fx-background-color: linear-gradient(to bottom, -fx-blue, -fx-lightBlue);
 }
 
 .continueButton{
     -fx-background-color: none;
     -fx-border-width: 2px;
-    -fx-border-color: #363753;
+    -fx-border-color: -fx-darkBlue;
     -fx-border-radius: 5%;
+
+    -fx-text-fill: -fx-darkBlue;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+.continueButton .ikonli-font-icon{
+    -fx-icon-color: -fx-darkBlue;
+}
+.continueButton .mfx-ripple-generator{
+    -mfx-ripple-color: -fx-blue;
 }
 .continueButton:hover{
-    -fx-text-fill: #5cd2c6;
-    -fx-border-color: #5cd2c6;
+    -fx-text-fill: -fx-blue;
+    -fx-border-color: -fx-blue;
 }
-
-.inputField{
-    -fx-background-color: none;
-    -fx-border-color: #fefefe;
-    -fx-border-width: 2px;
-    -fx-border-style: solid;
-    -fx-border-radius: 50%;
-    -fx-text-fill: #fefefe;
+.continueButton:hover .ikonli-font-icon{
+    -fx-icon-color: -fx-blue;
 }
 
 .loginFields{
     -fx-background-color: none;
+
     -fx-border-width: 0 0 2 0;
+    -fx-border-radius: 0;
     -fx-border-style: solid;
-    -fx-border-color: #363753;
-    -fx-text-fill: #363753;
+    -fx-border-color: -fx-darkBlue;
+
+    -fx-text-fill: -fx-darkBlue;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+
+    -mfx-float-mode: BORDER;
 }
-.loginFields:focused{
-    -fx-border-color: #5cd2c6;
-    -fx-text-fill: #5cd2c6;
+.loginFields .floating-text{
+    -fx-text-fill: -fx-darkBlue;
+}
+.loginFields .mfx-ripple-generator{
+    -mfx-ripple-color: -fx-lightBlue;
+}
+.loginFields:focus-within{
+    -fx-border-color: -fx-blue;
+    -fx-text-fill: -fx-blue;
+}
+.loginFields:focus-within .floating-text{
+    -fx-background-color: transparent;
+
+    -fx-text-fill: -fx-blue;
 }
 
-.showPassword{
-    -fx-background-color: none;
+.checkBox{
+    -fx-text-fill: -fx-darkBlue;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+.checkBox .ripple-container .mfx-ripple-generator{
+    -mfx-ripple-color: -fx-lightBlue;
+}
+.checkBox:selected .box{
+    -fx-background-color: -fx-blue;
+
+    -fx-border-color: -fx-darkblue;
 }

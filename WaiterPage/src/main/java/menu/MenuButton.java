@@ -31,7 +31,7 @@ public class MenuButton<T> extends Button {
     }
 
     public void buttonClicked(ActionEvent event){
-        if(((MenuButton)event.getSource()).getItem().getClass().toString().contains("Table")){
+        if((((MenuButton)event.getSource()).getItem() instanceof Table)){
             if(controller.isTransferring()){
                 connection.transferItem(((Table)((MenuButton)event.getSource()).getItem()),
                         controller.getTransferringItem().getItem(), controller.getOrder().getId());
@@ -44,8 +44,8 @@ public class MenuButton<T> extends Button {
                 controller.setChangingTable(false);
                 controller.setDishes();
             }else{
-                controller.getOrder().setOrderSource(((Table)((MenuButton)event.getSource()).getItem()));
                 connection.loadTable(((Table)((MenuButton)event.getSource()).getItem()));
+                controller.getOrder().setOrderSource(((Table)((MenuButton)event.getSource()).getItem()));
                 controller.setDishes();
             }
         }else{
